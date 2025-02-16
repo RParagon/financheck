@@ -1,40 +1,34 @@
-// js/ui.js
-import { Storage } from './storage.js';
+import { fetchTransactions, fetchInvestments, fetchGoals, deleteTransaction, deleteInvestment, deleteGoal } from './db.js';
+import { supabase } from './db.js';
 import { Chart } from 'chart.js';
 
-export class UI {
-  static chart = null;
-
-  // --- Navegação entre seções ---
-  static initNavigation() {
+export const UI = {
+  // Inicializa a navegação entre seções do app
+  initNavigation: () => {
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        // Remove classe 'active' de todas as seções e links
         document.querySelectorAll('main section').forEach(sec => sec.classList.remove('active'));
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        // Ativa a seção clicada
         const target = e.target.getAttribute('href');
         document.querySelector(target).classList.add('active');
-        e.target.classList.add('active');
       });
     });
-  }
+  },
 
-  // --- Dashboard ---
-  static async renderDashboard() {
-    const transactions = await Storage.getTransactions();
+  // Renderiza o Dashboard com saldo e gráfico
+  renderDashboard: async (userId) => {
+    const transactions = await fetchTransactions(userId);
     let totalIncome = 0;
     let totalExpense = 0;
     transactions.forEach(t => {
       if (t.type === 'income') totalIncome += parseFloat(t.amount);
-      else if (t.type === 'expense') totalExpense += parseFloat(t.amount);
+      else totalExpense += parseFloat(t.amount);
     });
     const balance = totalIncome - totalExpense;
     document.getElementById('current-balance').textContent = `R$ ${balance.toFixed(2)}`;
 
-    // Renderiza gráfico Doughnut com Chart.js
+    // Atualiza o gráfico (destrói o anterior, se houver)
     const ctx = document.getElementById('balanceChart').getContext('2d');
     if (UI.chart) UI.chart.destroy();
     UI.chart = new Chart(ctx, {
@@ -51,11 +45,11 @@ export class UI {
         maintainAspectRatio: false
       }
     });
-  }
+  },
 
-  // --- Transações ---
-  static async renderTransactions() {
-    const transactions = await Storage.getTransactions();
+  // Renderiza a tabela de Transações
+  renderTransactions: async (userId) => {
+    const transactions = await fetchTransactions(userId);
     const tbody = document.querySelector('#transactions-table tbody');
     tbody.innerHTML = '';
     transactions.forEach(t => {
@@ -68,11 +62,11 @@ export class UI {
       `;
       tbody.appendChild(tr);
     });
-  }
+  },
 
-  // --- Investimentos ---
-  static async renderInvestments() {
-    const investments = await Storage.getInvestments();
+  // Renderiza a tabela de Investimentos
+  renderInvestments: async (userId) => {
+    const investments = await fetchInvestments(userId);
     const tbody = document.querySelector('#investments-table tbody');
     tbody.innerHTML = '';
     investments.forEach(inv => {
@@ -84,11 +78,11 @@ export class UI {
       `;
       tbody.appendChild(tr);
     });
-  }
+  },
 
-  // --- Metas ---
-  static async renderGoals() {
-    const goals = await Storage.getGoals();
+  // Renderiza a tabela de Metas
+  renderGoals: async (userId) => {
+    const goals = await fetchGoals(userId);
     const tbody = document.querySelector('#goals-table tbody');
     tbody.innerHTML = '';
     goals.forEach(goal => {
@@ -100,20 +94,37 @@ export class UI {
       `;
       tbody.appendChild(tr);
     });
-  }
+  },
 
-  // --- Perfil ---
-  static renderProfile(user) {
-    // Exibe o email do usuário. Você pode expandir com mais dados se necessário.
-    document.getElementById('user-email').textContent = user.email;
+  // Renderiza todas as seções da aplicação
+  renderAll: async (userId) => {
+    await UI.renderDashboard(userId);
+    await UI.renderTransactions(userId);
+    await UI.renderInvestments(userId);
+    await UI.renderGoals(userId);
   }
+};
 
-  // --- Renderiza todas as seções do App ---
-  static async renderAll(user) {
-    await UI.renderDashboard();
-    await UI.renderTransactions();
-    await UI.renderInvestments();
-    await UI.renderGoals();
-    UI.renderProfile(user);
+// Delegação de eventos para exclusão de registros
+document.body.addEventListener('click', async (e) => {
+  // Obtenha o usuário a partir do Supabase
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  if (e.target.classList.contains('delete-transaction')) {
+    const id = e.target.dataset.id;
+    await deleteTransaction(id);
+    UI.renderTransactions(user.id);
+    UI.renderDashboard(user.id);
   }
-}
+  if (e.target.classList.contains('delete-investment')) {
+    const id = e.target.dataset.id;
+    await deleteInvestment(id);
+    UI.renderInvestments(user.id);
+  }
+  if (e.target.classList.contains('delete-goal')) {
+    const id = e.target.dataset.id;
+    await deleteGoal(id);
+    UI.renderGoals(user.id);
+  }
+});

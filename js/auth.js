@@ -1,29 +1,32 @@
-// js/auth.js
-import { supabaseClient } from './supabase.js';
+import { supabase } from './db.js';
 
-export class Auth {
-  static async signUp(email, password) {
-    const { data: { user }, error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-    });
-    return { user, error };
+export const login = async (email, password) => {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    throw error;
   }
+  return data;
+};
 
-  static async signIn(email, password) {
-    const { data: { user }, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { user, error };
+export const signup = async (email, password) => {
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) {
+    throw error;
   }
+  return data;
+};
 
-  static async signOut() {
-    const { error } = await supabaseClient.auth.signOut();
-    return { error };
+export const logout = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error('Erro ao realizar logout:', error);
   }
+};
 
-  static onAuthStateChange(callback) {
-    supabaseClient.auth.onAuthStateChange(callback);
-  }
-}
+export const getUser = () => {
+  return supabase.auth.getUser();
+};
+
+export const onAuthStateChange = (callback) => {
+  supabase.auth.onAuthStateChange(callback);
+};

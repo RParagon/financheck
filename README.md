@@ -1,10 +1,9 @@
-/FinanCheck
+/financheck
 ├── index.html
 ├── css
-│   └── styles.css
+│   └── styles.css
 └── js
     ├── app.js
     ├── auth.js
-    ├── storage.js
-    ├── supabase.js
+    ├── db.js
     └── ui.js
