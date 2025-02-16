@@ -2,7 +2,7 @@
 import { supabaseClient } from './supabase.js';
 
 export class Storage {
-  // Transações
+  // --- TRANSAÇÕES ---
   static async getTransactions() {
     const { data, error } = await supabaseClient
       .from('transactions')
@@ -30,7 +30,7 @@ export class Storage {
     return { data, error };
   }
 
-  // Investimentos
+  // --- INVESTIMENTOS ---
   static async getInvestments() {
     const { data, error } = await supabaseClient
       .from('investments')
@@ -58,7 +58,7 @@ export class Storage {
     return { data, error };
   }
 
-  // Metas
+  // --- METAS ---
   static async getGoals() {
     const { data, error } = await supabaseClient
       .from('goals')
