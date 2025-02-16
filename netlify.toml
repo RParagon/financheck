@@ -1,0 +1,11 @@
+[build]
+  publish = "public"
+  command = "echo 'Build complete'"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[dev]
+  framework = "#static"
