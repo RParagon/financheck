@@ -1,81 +1,118 @@
 # FinanCheck v0.2 – Documentação Completa
 
+**Autor:** Rafael Paragon  
+**Versão:** v0.2  
+**Data:** [Insira a data de lançamento]
+
+---
+
+## Sumário
+
+1. [Introdução](#introdução)
+2. [Funcionalidades](#funcionalidades)
+3. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+4. [Arquitetura e Estrutura do Projeto](#arquitetura-e-estrutura-do-projeto)
+5. [Descrição dos Módulos e Arquivos](#descrição-dos-módulos-e-arquivos)
+   - [index.html](#indexhtml)
+   - [css/styles.css](#cssstylescss)
+   - [js/supabaseClient.js](#jssupabaseclientjs)
+   - [js/auth.js](#jsauthjs)
+   - [js/storage.js](#jsstoragejs)
+   - [js/ui.js](#jsuijs)
+   - [js/app.js](#jsappjs)
+6. [Configuração e Instalação](#configuração-e-instalação)
+7. [Execução Local](#execução-local)
+8. [Deploy](#deploy)
+9. [Contribuição](#contribuição)
+10. [Licença](#licença)
+
+---
+
 ## Introdução
 
-**FinanCheck** é uma ferramenta web para gerenciamento financeiro pessoal. A aplicação permite que o usuário:
-- Faça login e cadastro (usando o Supabase para autenticação);
-- Registre transações (receitas e despesas);
-- Gerencie investimentos e metas financeiras;
-- Visualize um dashboard dinâmico com gráficos (usando Chart.js) mostrando o balanço entre receitas e despesas.
+O **FinanCheck** é uma aplicação web para gerenciamento financeiro pessoal. Com esta ferramenta, os usuários podem:
+- Realizar cadastro e login por meio do Supabase.
+- Registrar e visualizar transações (receitas e despesas).
+- Gerenciar investimentos e metas financeiras.
+- Visualizar um dashboard dinâmico que apresenta o saldo atual e um gráfico interativo comparando receitas e despesas (utilizando Chart.js).
 
-Esta documentação apresenta o código-fonte completo, explicando cada parte da aplicação de forma didática.
+Esta documentação apresenta de forma detalhada a arquitetura, o funcionamento e a configuração do FinanCheck.
+
+---
+
+## Funcionalidades
+
+- **Autenticação e Cadastro:**  
+  Integração com o Supabase para gerenciamento de usuários e controle de acesso.
+
+- **Gerenciamento de Dados Financeiros:**  
+  CRUD completo para transações, investimentos e metas financeiras.
+
+- **Dashboard Dinâmico:**  
+  Visualização de saldo atual e gráficos interativos (doughnut chart) para análise rápida dos dados.
+
+- **Interface Responsiva:**  
+  Design moderno e responsivo desenvolvido com HTML, CSS e JavaScript (ES6 Modules).
 
 ---
 
 ## Tecnologias Utilizadas
 
-- **HTML5** – Estrutura da aplicação.
+- **HTML5** – Estrutura semântica e acessível.
 - **CSS3** – Estilização e design responsivo.
-- **JavaScript (ES6 Modules)** – Lógica da aplicação.
-- **Supabase** – Backend para autenticação e armazenamento (CRUD) de dados.
-- **Chart.js** – Renderização de gráficos interativos.
+- **JavaScript (ES6 Modules)** – Lógica do aplicativo, manipulação da interface e integração com APIs.
+- **Supabase** – Backend para autenticação e operações CRUD (com políticas de Row Level Security configuradas).
+- **Chart.js** – Renderização de gráficos interativos para o dashboard.
 
 ---
 
-## Estrutura de Arquivos
+## Arquitetura e Estrutura do Projeto
+
+O projeto está organizado de forma modular, facilitando a manutenção e a escalabilidade. A estrutura de diretórios é a seguinte:
 
 ```
 /financheck
-├── index.html
+├── index.html          # Estrutura principal da aplicação
 ├── css
-│   └── styles.css
+│   └── styles.css      # Estilos e design da aplicação
 └── js
-    ├── app.js
-    ├── supabaseClient.js
-    ├── auth.js
-    ├── storage.js
-    └── ui.js
+    ├── app.js          # Lógica principal do aplicativo (integração dos módulos)
+    ├── supabaseClient.js  # Configuração e inicialização do Supabase
+    ├── auth.js         # Módulo de autenticação (login, cadastro, logout)
+    ├── storage.js      # Operações CRUD com Supabase para transações, investimentos e metas
+    └── ui.js           # Renderização da interface, navegação e integração com Chart.js
 ```
 
 ---
 
-## Descrição dos Arquivos
+## Descrição dos Módulos e Arquivos
 
-### 1. `index.html`
+### index.html
 
-**Objetivo:**  
-Define a estrutura principal da aplicação, contendo duas áreas:  
-- **Tela de Autenticação:** Formulários para login e cadastro.  
-- **Área do App:** Interface principal com o dashboard, seções de transações, investimentos e metas, além da navegação.
+Define a estrutura da interface da aplicação, dividindo-a em duas áreas principais:
 
-**Principais elementos:**
-- `<div id="auth-container">` – Exibe os formulários de login e cadastro.
-- `<div id="app-container">` – Contém a interface principal da FinanCheck.
-- `<canvas id="balanceChart">` – Local onde o gráfico do dashboard é renderizado (usando Chart.js).
+- **Tela de Autenticação:**  
+  Exibe os formulários de login e cadastro para o usuário.
 
----
+- **Área do Aplicativo:**  
+  Contém o dashboard, seções de transações, investimentos e metas, além da navegação.
 
-### 2. `css/styles.css`
-
-**Objetivo:**  
-Estilizar toda a interface do FinanCheck, garantindo:
-- Layout limpo e responsivo;
-- Estilização específica para formulários, tabelas, botões e a navegação.
-
-**Principais componentes:**
-- Reset CSS global e definição de tipografia;
-- Estilos para a tela de autenticação (centralizada com box-shadow e bordas arredondadas);
-- Estilos para o header, navegação e seções do app;
-- Configurações para formulários e tabelas para uma boa experiência visual.
+Contém também a inclusão do Chart.js via CDN e o script principal (`js/app.js`) que utiliza módulos ES6.
 
 ---
 
-### 3. `js/supabaseClient.js`
+### css/styles.css
 
-**Objetivo:**  
-Inicializar e configurar a conexão com o Supabase.
+Responsável pela estilização da aplicação, com foco em:
+- Layout limpo e responsivo.
+- Estilização dos formulários, botões, tabelas e navegação.
+- Configurações específicas para a tela de autenticação e para a área principal do app.
 
-**Código:**
+---
+
+### js/supabaseClient.js
+
+Inicializa e configura a conexão com o Supabase.  
 > **Atenção:** Os valores de `SUPABASE_URL` e `SUPABASE_ANON_KEY` foram substituídos por _placeholders_ para proteger dados sensíveis.
 
 ```js
@@ -89,19 +126,15 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 ---
 
-### 4. `js/auth.js`
+### js/auth.js
 
-**Objetivo:**  
-Gerenciar a autenticação dos usuários utilizando a API do Supabase.
-
-**Funções principais:**
-- `signUp(email, password)`: Cria um novo usuário.
-- `signIn(email, password)`: Realiza login do usuário.
-- `signOut()`: Efetua logout.
-- `getUser()`: Retorna o usuário autenticado atualmente.
-- `onAuthStateChange(callback)`: Permite registrar um callback para mudanças no estado de autenticação.
-
-**Código:**
+Gerencia a autenticação de usuários utilizando a API do Supabase.  
+Principais funções:
+- **signUp(email, password):** Cria um novo usuário.
+- **signIn(email, password):** Realiza o login.
+- **signOut():** Efetua o logout.
+- **getUser():** Retorna o usuário autenticado.
+- **onAuthStateChange(callback):** Registra um callback para alterações no estado de autenticação.
 
 ```js
 import { supabase } from './supabaseClient.js';
@@ -139,17 +172,14 @@ export const Auth = {
 
 ---
 
-### 5. `js/storage.js`
+### js/storage.js
 
-**Objetivo:**  
-Executar operações CRUD no banco de dados do Supabase para:
-- **Transações**
-- **Investimentos**
-- **Metas**
+Executa operações CRUD no banco de dados do Supabase para as tabelas:
+- **transactions**
+- **investments**
+- **goals**
 
-Cada função interage com a tabela correspondente no Supabase e respeita as políticas de Row Level Security (RLS) configuradas.
-
-**Código:**
+Cada função garante que, em caso de erro, uma exceção seja lançada para tratamento apropriado no aplicativo.
 
 ```js
 import { supabase } from './supabaseClient.js';
@@ -243,18 +273,13 @@ export const Storage = {
 
 ---
 
-### 6. `js/ui.js`
+### js/ui.js
 
-**Objetivo:**  
-Controlar a interface do usuário, incluindo:
-- **Navegação** entre as seções do app.
-- **Renderização do Dashboard:** Exibe saldo atual e gráfico (doughnut) comparando receitas e despesas.
-- **Renderização de tabelas:** Atualiza as listas de transações, investimentos e metas.
-
-**Importante:**  
-Como o Chart.js (versão 3+) exige que os componentes sejam registrados, usamos o comando `Chart.register(...registerables)`.
-
-**Código Completo:**
+Controla a renderização da interface e a navegação entre seções.  
+Principais responsabilidades:
+- **Dashboard:** Exibe o saldo atual e renderiza um gráfico interativo (doughnut) com Chart.js.  
+  *Observação:* Registra os componentes do Chart.js para garantir que o tipo "doughnut" seja reconhecido e destrói instâncias anteriores para evitar conflitos.
+- **Listagens:** Atualiza as tabelas de transações, investimentos e metas com os dados recuperados do Supabase.
 
 ```js
 import { Chart, registerables } from 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.esm.js';
@@ -291,7 +316,6 @@ export const UI = {
 
       const ctx = document.getElementById('balanceChart').getContext('2d');
 
-      // Se já existir um gráfico, destrua-o para evitar conflitos
       if (UI.chart) {
         UI.chart.destroy();
       }
@@ -384,15 +408,13 @@ export const UI = {
 
 ---
 
-### 7. `js/app.js`
+### js/app.js
 
-**Objetivo:**  
-Integrar todas as funcionalidades:
-- Configura eventos para formulários de login, cadastro, logout e envio de dados (transações, investimentos, metas);
-- Inicializa a navegação e a renderização da interface;
-- Verifica o estado de autenticação e alterna entre a tela de autenticação e a área do app.
-
-**Código:**
+Integra todos os módulos e orquestra a lógica do FinanCheck.  
+Responsabilidades:
+- Alternar entre os formulários de autenticação (login/cadastro) e a área principal do app.
+- Gerenciar eventos de envio de dados (cadastro, login, adição de transações/investimentos/metas e exclusões).
+- Monitorar alterações no estado de autenticação e renderizar as informações conforme o usuário logado.
 
 ```js
 import { supabase } from './supabaseClient.js';
@@ -552,30 +574,72 @@ function toggleAuth(showAuth) {
 
 ---
 
-## Como Utilizar
+## Configuração e Instalação
 
-1. **Instalação e Configuração:**
-   - Clone o repositório:
-     ```bash
-     git clone https://github.com/RParagon/financheck.git
-     ```
-   - Navegue até o branch `FinanCheck-SupaBase`:
-     ```bash
-     cd financheck
-     git checkout FinanCheck-SupaBase
-     ```
-   - No arquivo `js/supabaseClient.js`, substitua os _placeholders_ de `SUPABASE_URL` e `SUPABASE_ANON_KEY` com as credenciais do seu projeto Supabase. **Atenção para não expor esses dados em repositórios públicos.**
+1. **Clone o Repositório:**
 
-2. **Executando Localmente:**
-   - Utilize um servidor HTTP simples (por exemplo, `live-server` ou `http-server`) para executar o projeto.
-   - Abra o `index.html` no seu navegador.
+   ```bash
+   git clone https://github.com/RParagon/financheck.git
+   ```
+2. **Navegue até o branch FinanCheck-SupaBase:**
 
-3. **Deploy:**
-   - FinanCheck pode ser implantado em serviços de hospedagem estática, como Netlify.
-   - Faça o deploy vinculando o repositório do GitHub à Netlify, garantindo que as configurações do Supabase estejam corretas.
+   ```bash
+   cd financheck
+   git checkout FinanCheck-SupaBase
+   ```
+3. **Configuração do Supabase:**
+
+   No arquivo `js/supabaseClient.js`, substitua os _placeholders_ de `SUPABASE_URL` e `SUPABASE_ANON_KEY` pelas credenciais do seu projeto Supabase.  
+   **Atenção:** Nunca exponha essas informações em repositórios públicos.
 
 ---
 
+## Execução Local
 
+Para testar o FinanCheck localmente, utilize um servidor HTTP simples. Por exemplo, com o `live-server`:
 
-Esta documentação completa inclui uma explicação detalhada de cada arquivo, a lógica de funcionamento, orientações de instalação e deploy, e um exemplo de README.md para o repositório do GitHub. Basta copiar e colar os arquivos conforme apresentados e ajustar os _placeholders_ com as informações do seu projeto. Se precisar de mais alguma alteração ou tiver dúvidas, estou à disposição para ajudar!
+```bash
+npx live-server
+```
+
+Ou com o `http-server`:
+
+```bash
+npx http-server .
+```
+
+Abra o navegador e acesse o endereço local (por exemplo, `http://localhost:8080`).
+
+---
+
+## Deploy
+
+O FinanCheck é uma aplicação estática e pode ser implantado em serviços como a Netlify.  
+Basta conectar o repositório do GitHub com o serviço de deploy e configurar as variáveis de ambiente necessárias (se houver).
+
+---
+
+## Contribuição
+
+Se desejar contribuir com o projeto, siga as etapas abaixo:
+
+1. Faça um fork do repositório.
+2. Crie uma branch para sua feature (`git checkout -b feature/nome-da-feature`).
+3. Faça commit das suas alterações (`git commit -m 'Adiciona nova feature'`).
+4. Envie a branch (`git push origin feature/nome-da-feature`).
+5. Abra um Pull Request.
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
+
+*Nota: Certifique-se de não expor dados sensíveis (como chaves de API) em repositórios públicos.*
+
+---
+
+# Fim da Documentação
+```
