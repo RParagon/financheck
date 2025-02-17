@@ -1,158 +1,312 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinanCheck v0.3</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="manifest" href="manifest.json">
-</head>
-<body>
-  <!-- Tela de Autenticação -->
-  <div id="auth-container">
-    <h1>FinanCheck</h1>
-    <div id="auth-forms">
-      <!-- Formulário de Login -->
-      <div id="login-form-container">
-        <h2>Login</h2>
-        <form id="login-form">
-          <input type="email" id="login-email" placeholder="Email" required>
-          <input type="password" id="login-password" placeholder="Senha" required>
-          <button type="submit">Entrar</button>
-        </form>
-        <p>Não tem conta? <a href="#" id="show-signup">Cadastre-se</a></p>
-      </div>
-      <!-- Formulário de Cadastro -->
-      <div id="signup-form-container" style="display: none;">
-        <h2>Cadastro</h2>
-        <form id="signup-form">
-          <input type="email" id="signup-email" placeholder="Email" required>
-          <input type="password" id="signup-password" placeholder="Senha" required>
-          <button type="submit">Cadastrar</button>
-        </form>
-        <p>Já tem conta? <a href="#" id="show-login">Entrar</a></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Área da Aplicação -->
-  <div id="app-container" style="display: none;">
-    <header>
-      <div class="header-top">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanCheck v0.3 – Organização e Crescimento Financeiro</title>
+    <meta name="description" content="FinanCheck é a ferramenta definitiva para organizar suas finanças e acompanhar seu crescimento financeiro com gamificação e PWA.">
+    <meta name="keywords" content="Finanças, Controle Financeiro, Gamificação, PWA, FinanCheck">
+    <meta name="author" content="Rafael Paragon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+    <meta name="theme-color" content="#28a745">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notyf/3.8.0/notyf.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notyf/3.8.0/notyf.min.css">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="FinanCheck v0.3">
+    <meta property="og:description" content="Organize suas finanças e veja seu crescimento com gamificação.">
+    <meta property="og:image" content="icons/icon-512.png">
+    <meta property="og:url" content="https://seu-dominio.com/">
+    <meta property="og:type" content="website">
+    <!-- Meta adicional -->
+    <meta name="revisit-after" content="7 days">
+    <meta name="distribution" content="global">
+    <!-- Fim dos metadados -->
+  </head>
+  <body>
+    <!-- Loader inicial -->
+    <div id="loader" class="loader">Carregando...</div>
+    <!-- Seção de Autenticação -->
+    <div id="auth-container" class="container">
+      <header class="auth-header">
         <h1>FinanCheck</h1>
-        <button id="logout-btn">Sair</button>
-        <!-- Botão de Menu para Mobile -->
-        <button id="menu-toggle" class="menu-toggle">☰</button>
-      </div>
-      <nav id="main-nav">
-        <ul>
-          <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
-          <li><a href="#transacoes" class="nav-link">Transações</a></li>
-          <li><a href="#investimentos" class="nav-link">Investimentos</a></li>
-          <li><a href="#metas" class="nav-link">Metas</a></li>
-          <li><a href="#gamificacao" class="nav-link">Desafios</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <main>
-      <!-- Dashboard -->
-      <section id="dashboard" class="section active">
-        <div class="widget balance-widget">
-          <p>Saldo Atual:</p>
-          <h3 id="current-balance">R$0,00</h3>
-        </div>
-        <div class="widget chart-widget">
-          <canvas id="balanceChart"></canvas>
-        </div>
-      </section>
-
-      <!-- Transações -->
-      <section id="transacoes" class="section">
-        <h2>Transações</h2>
-        <form id="transaction-form">
-          <input type="text" id="transaction-description" placeholder="Descrição" required>
-          <input type="number" id="transaction-amount" placeholder="Valor" step="0.01" required>
-          <select id="transaction-type" required>
-            <option value="income">Receita</option>
-            <option value="expense">Despesa</option>
-          </select>
-          <button type="submit">Adicionar</button>
-        </form>
-        <table id="transactions-table">
-          <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Tipo</th>
-              <th>Valor</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- Investimentos -->
-      <section id="investimentos" class="section">
-        <h2>Investimentos</h2>
-        <form id="investment-form">
-          <input type="text" id="investment-name" placeholder="Nome do Investimento" required>
-          <input type="number" id="investment-amount" placeholder="Valor Investido" step="0.01" required>
-          <button type="submit">Adicionar Investimento</button>
-        </form>
-        <table id="investments-table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Valor</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- Metas -->
-      <section id="metas" class="section">
-        <h2>Metas</h2>
-        <form id="goal-form">
-          <input type="text" id="goal-description" placeholder="Descrição da Meta" required>
-          <input type="number" id="goal-target" placeholder="Valor Alvo" step="0.01" required>
-          <button type="submit">Adicionar Meta</button>
-        </form>
-        <table id="goals-table">
-          <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Valor Alvo</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- Gamificação / Desafios -->
-      <section id="gamificacao" class="section">
-        <h2>Desafios &amp; Conquistas</h2>
-        <div class="progress-container">
-          <div id="progress-bar" class="progress-bar"></div>
-          <span id="progress-text">0 pontos</span>
-        </div>
-        <div id="achievements-container" class="achievements-container">
-          <!-- Conquistas serão renderizadas aqui -->
+        <p>Controle suas finanças com facilidade e diversão.</p>
+      </header>
+      <section class="auth-section">
+        <div id="auth-forms">
+          <div id="login-form-container" class="auth-form">
+            <h2>Login</h2>
+            <form id="login-form">
+              <label for="login-email">Email:</label>
+              <input type="email" id="login-email" placeholder="Digite seu email" required>
+              <label for="login-password">Senha:</label>
+              <input type="password" id="login-password" placeholder="Digite sua senha" required>
+              <button type="submit" class="btn">Entrar</button>
+            </form>
+            <p class="auth-switch">Não tem conta? <a href="#" id="show-signup">Cadastre-se aqui</a></p>
+          </div>
+          <div id="signup-form-container" class="auth-form" style="display: none;">
+            <h2>Cadastro</h2>
+            <form id="signup-form">
+              <label for="signup-email">Email:</label>
+              <input type="email" id="signup-email" placeholder="Digite seu email" required>
+              <label for="signup-password">Senha:</label>
+              <input type="password" id="signup-password" placeholder="Crie uma senha" required>
+              <button type="submit" class="btn">Cadastrar</button>
+            </form>
+            <p class="auth-switch">Já tem conta? <a href="#" id="show-login">Faça login</a></p>
+          </div>
         </div>
       </section>
-    </main>
-
-    <footer>
-      <p>&copy; 2025 FinanCheck - Desenvolvido por Rafael Paragon</p>
-    </footer>
-  </div>
-
-  <!-- Chart.js (via CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Script principal (módulos ES6) -->
-  <script type="module" src="js/app.js"></script>
-</body>
+    </div>
+    <!-- Área principal da aplicação -->
+    <div id="app-container" class="container" style="display: none;">
+      <header class="app-header">
+        <div class="header-top">
+          <h1>FinanCheck</h1>
+          <button id="logout-btn" class="btn logout-btn">Sair</button>
+          <button id="menu-toggle" class="menu-toggle" aria-label="Menu">☰</button>
+        </div>
+        <nav id="main-nav" class="main-nav">
+          <ul>
+            <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+            <li><a href="#transacoes" class="nav-link">Transações</a></li>
+            <li><a href="#investimentos" class="nav-link">Investimentos</a></li>
+            <li><a href="#metas" class="nav-link">Metas</a></li>
+            <li><a href="#crescimento" class="nav-link">Meu Crescimento</a></li>
+            <li><a href="#notificacoes" class="nav-link">Notificações</a></li>
+            <li><a href="#configuracoes" class="nav-link">Configurações</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main class="app-main">
+        <!-- Dashboard -->
+        <section id="dashboard" class="section active">
+          <div class="widget dashboard-widget">
+            <div class="widget-header">
+              <h2>Dashboard Financeiro</h2>
+              <p>Acompanhe seu saldo e desempenho</p>
+            </div>
+            <div class="widget-body">
+              <div class="balance-display">
+                <p>Saldo Atual:</p>
+                <h3 id="current-balance">R$0,00</h3>
+              </div>
+              <div class="chart-display">
+                <canvas id="balanceChart"></canvas>
+              </div>
+            </div>
+            <div class="widget-footer">
+              <p>Última atualização: <span id="dashboard-updated">--:--</span></p>
+            </div>
+          </div>
+        </section>
+        <!-- Transações -->
+        <section id="transacoes" class="section">
+          <div class="widget transactions-widget">
+            <div class="widget-header">
+              <h2>Transações</h2>
+              <p>Registre suas entradas e saídas</p>
+            </div>
+            <div class="widget-body">
+              <form id="transaction-form" class="form">
+                <div class="form-group">
+                  <label for="transaction-description">Descrição:</label>
+                  <input type="text" id="transaction-description" placeholder="Ex: Salário" required>
+                </div>
+                <div class="form-group">
+                  <label for="transaction-amount">Valor:</label>
+                  <input type="number" id="transaction-amount" placeholder="Ex: 1500.00" step="0.01" required>
+                </div>
+                <div class="form-group">
+                  <label for="transaction-type">Tipo:</label>
+                  <select id="transaction-type" required>
+                    <option value="income">Receita</option>
+                    <option value="expense">Despesa</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn">Adicionar Transação</button>
+              </form>
+              <table id="transactions-table" class="data-table">
+                <thead>
+                  <tr>
+                    <th>Descrição</th>
+                    <th>Tipo</th>
+                    <th>Valor</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Transações serão inseridas dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+            <div class="widget-footer">
+              <p>Total de transações: <span id="transaction-count">0</span></p>
+            </div>
+          </div>
+        </section>
+        <!-- Investimentos -->
+        <section id="investimentos" class="section">
+          <div class="widget investments-widget">
+            <div class="widget-header">
+              <h2>Investimentos</h2>
+              <p>Gerencie seus investimentos</p>
+            </div>
+            <div class="widget-body">
+              <form id="investment-form" class="form">
+                <div class="form-group">
+                  <label for="investment-name">Nome:</label>
+                  <input type="text" id="investment-name" placeholder="Ex: Ações" required>
+                </div>
+                <div class="form-group">
+                  <label for="investment-amount">Valor Investido:</label>
+                  <input type="number" id="investment-amount" placeholder="Ex: 5000.00" step="0.01" required>
+                </div>
+                <button type="submit" class="btn">Adicionar Investimento</button>
+              </form>
+              <table id="investments-table" class="data-table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Valor</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Investimentos serão inseridos dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+            <div class="widget-footer">
+              <p>Total de investimentos: <span id="investment-count">0</span></p>
+            </div>
+          </div>
+        </section>
+        <!-- Metas -->
+        <section id="metas" class="section">
+          <div class="widget goals-widget">
+            <div class="widget-header">
+              <h2>Metas Financeiras</h2>
+              <p>Defina e acompanhe suas metas</p>
+            </div>
+            <div class="widget-body">
+              <form id="goal-form" class="form">
+                <div class="form-group">
+                  <label for="goal-description">Descrição:</label>
+                  <input type="text" id="goal-description" placeholder="Ex: Economizar para viagem" required>
+                </div>
+                <div class="form-group">
+                  <label for="goal-target">Valor Alvo:</label>
+                  <input type="number" id="goal-target" placeholder="Ex: 3000.00" step="0.01" required>
+                </div>
+                <button type="submit" class="btn">Adicionar Meta</button>
+              </form>
+              <table id="goals-table" class="data-table">
+                <thead>
+                  <tr>
+                    <th>Descrição</th>
+                    <th>Valor Alvo</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Metas serão inseridas dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+            <div class="widget-footer">
+              <p>Total de metas: <span id="goal-count">0</span></p>
+            </div>
+          </div>
+        </section>
+        <!-- Crescimento / Gamificação -->
+        <section id="crescimento" class="section">
+          <div class="widget growth-widget">
+            <div class="widget-header">
+              <h2>Meu Crescimento Financeiro</h2>
+              <p>Acompanhe seus pontos e evolução</p>
+            </div>
+            <div class="widget-body">
+              <div class="progress-widget">
+                <label for="progress-bar">Progresso:</label>
+                <div class="progress-container">
+                  <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                <p id="progress-text">0 pontos - Nível Iniciante</p>
+              </div>
+              <div class="badge-widget">
+                <h3>Badges Conquistados</h3>
+                <div id="badges-container" class="badges-container">
+                  <!-- Badges serão exibidas aqui -->
+                </div>
+              </div>
+            </div>
+            <div class="widget-footer">
+              <p>Continue registrando suas transações para crescer!</p>
+            </div>
+          </div>
+        </section>
+        <!-- Notificações -->
+        <section id="notificacoes" class="section">
+          <div class="widget notifications-widget">
+            <div class="widget-header">
+              <h2>Notificações</h2>
+              <p>Acompanhe alertas e dicas</p>
+            </div>
+            <div class="widget-body">
+              <ul id="notifications-list" class="notifications-list">
+                <!-- Notificações aparecerão aqui -->
+              </ul>
+            </div>
+            <div class="widget-footer">
+              <p>Sem notificações novas.</p>
+            </div>
+          </div>
+        </section>
+        <!-- Configurações -->
+        <section id="configuracoes" class="section">
+          <div class="widget settings-widget">
+            <div class="widget-header">
+              <h2>Configurações</h2>
+              <p>Personalize sua experiência</p>
+            </div>
+            <div class="widget-body">
+              <form id="settings-form" class="form">
+                <div class="form-group">
+                  <label for="theme-select">Tema:</label>
+                  <select id="theme-select">
+                    <option value="light">Claro</option>
+                    <option value="dark">Escuro</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="lang-select">Idioma:</label>
+                  <select id="lang-select">
+                    <option value="pt">Português</option>
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn">Salvar Configurações</button>
+              </form>
+            </div>
+            <div class="widget-footer">
+              <p>Configurações atualizadas.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="app-footer">
+        <p>&copy; 2025 FinanCheck - Desenvolvido por R Paragon</p>
+        <p>Versão v0.3 – Organização e Crescimento Financeiro</p>
+      </footer>
+    </div>
+    <!-- Scripts externos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
 </html>
