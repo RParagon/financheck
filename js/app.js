@@ -7,7 +7,7 @@ import { Gamification } from './gamification.js';
 let currentUserId = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Inicializa navegação e menu mobile
+  // Inicializa a navegação e o menu mobile
   UI.initNavigation();
   UI.initMenuToggle();
 
@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     navigator.serviceWorker.register('/service-worker.js')
       .then(registration => console.log('Service Worker registrado:', registration))
       .catch(error => console.error('Erro no registro do Service Worker:', error));
+  }
 });
 
 async function checkUser() {
