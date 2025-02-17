@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const password = document.getElementById('login-password').value;
     try {
       await login(email, password);
-      // O listener de auth irá atualizar a interface
+      // O listener de auth atualizará a interface
     } catch (error) {
       alert('Erro no login: ' + error.message);
     }

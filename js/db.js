@@ -1,11 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+// Importa o Supabase via URL CDN com suporte a ES Modules
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const SUPABASE_URL = 'https://elmjtdztnwecsregkbut.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVsbWp0ZHp0bndlY3NyZWdrYnV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3NDQ3NzksImV4cCI6MjA1NTMyMDc3OX0.KicoVbt18thHT2Xud4L5oa95yboiZSYmomNFYnnLdIg';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// --- TRANSACTIONS ---
+// --- TRANSAÇÕES ---
 export const fetchTransactions = async (userId) => {
   const { data, error } = await supabase
     .from('transactions')
@@ -40,7 +41,7 @@ export const deleteTransaction = async (id) => {
   return data;
 };
 
-// --- INVESTMENTS ---
+// --- INVESTIMENTOS ---
 export const fetchInvestments = async (userId) => {
   const { data, error } = await supabase
     .from('investments')
@@ -75,7 +76,7 @@ export const deleteInvestment = async (id) => {
   return data;
 };
 
-// --- GOALS ---
+// --- METAS ---
 export const fetchGoals = async (userId) => {
   const { data, error } = await supabase
     .from('goals')
