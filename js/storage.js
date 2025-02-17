@@ -12,7 +12,6 @@ export const Storage = {
   },
 
   async addTransaction(transaction) {
-    // transaction deve conter: { description, amount, type, user_id }
     const { data, error } = await supabase
       .from('transactions')
       .insert([transaction]);
@@ -40,7 +39,6 @@ export const Storage = {
   },
 
   async addInvestment(investment) {
-    // investment deve conter: { name, amount, user_id }
     const { data, error } = await supabase
       .from('investments')
       .insert([investment]);
@@ -68,7 +66,6 @@ export const Storage = {
   },
 
   async addGoal(goal) {
-    // goal deve conter: { description, target, user_id }
     const { data, error } = await supabase
       .from('goals')
       .insert([goal]);

@@ -1,24 +1,25 @@
-/* Reset básico */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
   
-  /* Tipografia e cores gerais */
+  /* Base Styles */
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background: #f4f4f4;
     color: #333;
+    line-height: 1.6;
   }
   
-  /* ----- Estilos para a Tela de Autenticação ----- */
+  /* Autenticação */
   #auth-container {
     max-width: 400px;
     margin: 5rem auto;
     background: #fff;
     padding: 2rem;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     text-align: center;
   }
@@ -34,18 +35,17 @@
     margin-bottom: 1rem;
   }
   
-  #auth-forms input {
+  #auth-forms input,
+  #auth-forms button {
     padding: 0.75rem;
     border: 1px solid #ddd;
     border-radius: 4px;
   }
   
   #auth-forms button {
-    padding: 0.75rem;
     background: #28a745;
-    border: none;
-    border-radius: 4px;
     color: #fff;
+    border: none;
     cursor: pointer;
   }
   
@@ -53,57 +53,70 @@
     background: #218838;
   }
   
-  /* ----- Estilos para a Área da Aplicação ----- */
+  /* App Container */
+  #app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Header & Navigation */
   header {
     background: #333;
     color: #fff;
     padding: 1rem;
-    position: relative;
-    text-align: center;
   }
   
-  header h1 {
-    margin-bottom: 0.5rem;
-  }
-  
-  header button#logout-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: #dc3545;
-    border: none;
-    padding: 0.5rem 1rem;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  header button#logout-btn:hover {
-    background: #c82333;
-  }
-  
-  nav ul {
-    list-style: none;
+  .header-top {
     display: flex;
-    justify-content: center;
-    margin-top: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
   }
   
-  nav ul li {
-    margin: 0 1rem;
+  .menu-toggle {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #fff;
+    display: block;
   }
   
-  nav ul li a {
+  /* Menu de Navegação */
+  nav#main-nav ul {
+    list-style: none;
+    display: none; /* escondido em mobile por padrão */
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  nav#main-nav ul li {
+    margin: 0.5rem 0;
+  }
+  
+  nav#main-nav ul li a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold;
+    padding: 0.5rem;
   }
   
-  nav ul li a:hover {
-    text-decoration: underline;
+  /* Exibir menu em telas maiores */
+  @media (min-width: 768px) {
+    .menu-toggle {
+      display: none;
+    }
+    nav#main-nav ul {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+    nav#main-nav ul li {
+      margin: 0 1rem;
+    }
   }
   
+  /* Conteúdo Principal */
   main {
+    flex: 1;
     padding: 1rem;
   }
   
@@ -115,98 +128,49 @@
     display: block;
   }
   
-  /* Cartão de saldo */
-  .balance-card {
+  /* Widgets */
+  .widget {
     background: #fff;
+    margin: 1rem 0;
     padding: 1rem;
     border-radius: 5px;
-    text-align: center;
-    margin-bottom: 1rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   
-  /* Container do gráfico */
-  .chart-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    height: 300px;
-    margin: auto;
+  /* Gamificação */
+  .progress-container {
+    margin: 1rem 0;
+    text-align: center;
   }
   
-  /* Formulários das seções (transações, investimentos e metas) */
-  form {
-    background: #fff;
-    padding: 1rem;
-    border-radius: 5px;
-    margin-bottom: 1rem;
+  .progress-bar {
+    background: #28a745;
+    height: 20px;
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  
+  .achievements-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    justify-content: center;
   }
   
-  form input, form select, form button {
+  .achievement {
+    margin: 0.5rem;
     padding: 0.5rem;
-    font-size: 1rem;
-  }
-  
-  form input, form select {
-    flex: 1;
-    min-width: 150px;
-  }
-  
-  form button {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  form button:hover {
-    background: #218838;
-  }
-  
-  /* Tabelas */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  table th, table td {
-    padding: 0.75rem;
     border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  table th {
-    background: #f1f1f1;
-  }
-  
-  table button {
-    background: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 0.3rem 0.5rem;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  table button:hover {
-    background: #c82333;
-  }
-  
-  /* Rodapé */
-  footer {
+    border-radius: 5px;
     text-align: center;
-    padding: 1rem;
+    width: 80px;
+  }
+  
+  /* Footer */
+  footer {
     background: #333;
     color: #fff;
-    margin-top: auto;
+    text-align: center;
+    padding: 1rem;
   }
   

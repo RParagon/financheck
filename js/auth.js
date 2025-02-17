@@ -18,7 +18,6 @@ export const Auth = {
     if (error) console.error('Erro ao deslogar:', error);
   },
 
-  // Retorna a sessão atual (incluindo o usuário)
   async getUser() {
     const { data: { user } } = await supabase.auth.getUser();
     return user;

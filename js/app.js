@@ -2,11 +2,16 @@ import { supabase } from './supabaseClient.js';
 import { Auth } from './auth.js';
 import { Storage } from './storage.js';
 import { UI } from './ui.js';
+import { Gamification } from './gamification.js';
 
 let currentUserId = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Alterna entre formulários de login e cadastro
+  // Inicializa navegação e menu mobile
+  UI.initNavigation();
+  UI.initMenuToggle();
+
+  // Alternar entre formulários de login e cadastro
   document.getElementById('show-signup').addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('login-form-container').style.display = 'none';
@@ -53,9 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggleAuth(true);
   });
 
-  // Inicializa a navegação entre seções
-  UI.initNavigation();
-
   // Envio de nova transação
   document.getElementById('transaction-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -64,7 +66,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const type = document.getElementById('transaction-type').value;
     try {
       await Storage.addTransaction({ description, amount, type, user_id: currentUserId });
-      await UI.renderAll();
+      // Atualiza pontos: exemplo 10 pontos por transação
+      const progress = await Gamification.getUserProgress(currentUserId);
+      const newPoints = (progress.points || 0) + 10;
+      await Gamification.updateUserProgress(currentUserId, newPoints);
+      // Verifica conquista da primeira transação
+      await Gamification.checkAndAwardAchievement(currentUserId, 'primeira_transacao');
+      await UI.renderAll(currentUserId);
       e.target.reset();
     } catch (error) {
       alert('Erro ao adicionar transação: ' + error.message);
@@ -105,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const id = e.target.dataset.id;
       try {
         await Storage.deleteTransaction(id);
-        await UI.renderAll();
+        await UI.renderAll(currentUserId);
       } catch (error) {
         alert('Erro ao excluir transação: ' + error.message);
       }
@@ -130,29 +138,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Verifica se há usuário logado ao iniciar
   await checkUser();
 
-  // Escuta alterações de autenticação
+  // Escuta alterações no estado de autenticação
   supabase.auth.onAuthStateChange((event, session) => {
     checkUser();
   });
+
+  // Registra o Service Worker (PWA)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => console.log('Service Worker registrado:', registration))
+      .catch(error => console.error('Erro no registro do Service Worker:', error));
 });
 
-// Alterna entre mostrar a tela de autenticação ou a área do app
-function toggleAuth(showAuth) {
-  document.getElementById('auth-container').style.display = showAuth ? 'block' : 'none';
-  document.getElementById('app-container').style.display = showAuth ? 'none' : 'block';
-}
-
-// Verifica o estado de autenticação e atualiza a interface
 async function checkUser() {
   const user = await Auth.getUser();
   if (user) {
     currentUserId = user.id;
     toggleAuth(false);
-    await UI.renderAll();
+    await UI.renderAll(currentUserId);
   } else {
     toggleAuth(true);
   }
+}
+
+function toggleAuth(showAuth) {
+  document.getElementById('auth-container').style.display = showAuth ? 'block' : 'none';
+  document.getElementById('app-container').style.display = showAuth ? 'none' : 'block';
 }

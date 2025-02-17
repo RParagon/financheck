@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinanCheck - Controle Financeiro</title>
+  <title>FinanCheck v0.3</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <!-- Tela de Autenticação -->
@@ -34,17 +35,22 @@
     </div>
   </div>
 
-  <!-- Área da Aplicação FinanCheck -->
+  <!-- Área da Aplicação -->
   <div id="app-container" style="display: none;">
     <header>
-      <h1>FinanCheck</h1>
-      <button id="logout-btn">Sair</button>
-      <nav>
+      <div class="header-top">
+        <h1>FinanCheck</h1>
+        <button id="logout-btn">Sair</button>
+        <!-- Botão de Menu para Mobile -->
+        <button id="menu-toggle" class="menu-toggle">☰</button>
+      </div>
+      <nav id="main-nav">
         <ul>
           <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
           <li><a href="#transacoes" class="nav-link">Transações</a></li>
           <li><a href="#investimentos" class="nav-link">Investimentos</a></li>
           <li><a href="#metas" class="nav-link">Metas</a></li>
+          <li><a href="#gamificacao" class="nav-link">Desafios</a></li>
         </ul>
       </nav>
     </header>
@@ -52,12 +58,11 @@
     <main>
       <!-- Dashboard -->
       <section id="dashboard" class="section active">
-        <h2>Dashboard</h2>
-        <div class="balance-card">
+        <div class="widget balance-widget">
           <p>Saldo Atual:</p>
           <h3 id="current-balance">R$0,00</h3>
         </div>
-        <div class="chart-container">
+        <div class="widget chart-widget">
           <canvas id="balanceChart"></canvas>
         </div>
       </section>
@@ -83,9 +88,7 @@
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Linhas serão inseridas via JavaScript -->
-          </tbody>
+          <tbody></tbody>
         </table>
       </section>
 
@@ -105,9 +108,7 @@
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Linhas serão inseridas via JavaScript -->
-          </tbody>
+          <tbody></tbody>
         </table>
       </section>
 
@@ -127,21 +128,31 @@
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Linhas serão inseridas via JavaScript -->
-          </tbody>
+          <tbody></tbody>
         </table>
+      </section>
+
+      <!-- Gamificação / Desafios -->
+      <section id="gamificacao" class="section">
+        <h2>Desafios &amp; Conquistas</h2>
+        <div class="progress-container">
+          <div id="progress-bar" class="progress-bar"></div>
+          <span id="progress-text">0 pontos</span>
+        </div>
+        <div id="achievements-container" class="achievements-container">
+          <!-- Conquistas serão renderizadas aqui -->
+        </div>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2025 FinanCheck</p>
+      <p>&copy; 2025 FinanCheck - Desenvolvido por Rafael Paragon</p>
     </footer>
   </div>
 
-  <!-- Chart.js para gráficos -->
+  <!-- Chart.js (via CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Nosso App (utilizando módulos ES6) -->
+  <!-- Script principal (módulos ES6) -->
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
