@@ -1,134 +1,158 @@
-import { supabase } from './db.js';
-import { login, signup, logout } from './auth.js';
+import { supabase } from './supabaseClient.js';
+import { Auth } from './auth.js';
+import { Storage } from './storage.js';
 import { UI } from './ui.js';
-import { addTransaction, addInvestment, addGoal } from './db.js';
+
+let currentUserId = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Verifica se há usuário autenticado
-  let { data: { user } } = await supabase.auth.getUser();
-  if (user) {
-    showApp();
-    UI.renderAll(user.id);
-  } else {
-    showAuth();
-  }
-
-  // Monitora alterações no estado da autenticação
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (session && session.user) {
-      showApp();
-      UI.renderAll(session.user.id);
-    } else {
-      showAuth();
-    }
+  // Alterna entre formulários de login e cadastro
+  document.getElementById('show-signup').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('login-form-container').style.display = 'none';
+    document.getElementById('signup-form-container').style.display = 'block';
+  });
+  document.getElementById('show-login').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('signup-form-container').style.display = 'none';
+    document.getElementById('login-form-container').style.display = 'block';
   });
 
-  // Alterna entre abas Login e Cadastro
-  const loginTab = document.getElementById('login-tab');
-  const signupTab = document.getElementById('signup-tab');
-  const loginForm = document.getElementById('login-form');
-  const signupForm = document.getElementById('signup-form');
-
-  loginTab.addEventListener('click', () => {
-    loginTab.classList.add('active');
-    signupTab.classList.remove('active');
-    loginForm.classList.remove('hidden');
-    signupForm.classList.add('hidden');
-  });
-
-  signupTab.addEventListener('click', () => {
-    signupTab.classList.add('active');
-    loginTab.classList.remove('active');
-    signupForm.classList.remove('hidden');
-    loginForm.classList.add('hidden');
-  });
-
-  // Processa o login
-  loginForm.addEventListener('submit', async (e) => {
+  // Login
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     try {
-      await login(email, password);
-      // O listener de auth atualizará a interface
+      await Auth.signIn(email, password);
+      await checkUser();
     } catch (error) {
       alert('Erro no login: ' + error.message);
     }
   });
 
-  // Processa o cadastro
-  signupForm.addEventListener('submit', async (e) => {
+  // Cadastro
+  document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('signup-email').value;
     const password = document.getElementById('signup-password').value;
     try {
-      await signup(email, password);
-      alert('Cadastro realizado com sucesso! Verifique seu email para confirmação, se necessário.');
+      await Auth.signUp(email, password);
+      alert('Cadastro realizado com sucesso! Verifique seu email para confirmar.');
+      document.getElementById('signup-form-container').style.display = 'none';
+      document.getElementById('login-form-container').style.display = 'block';
     } catch (error) {
       alert('Erro no cadastro: ' + error.message);
     }
   });
 
   // Logout
-  document.getElementById('logout-button').addEventListener('click', async () => {
-    await logout();
-    showAuth();
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    await Auth.signOut();
+    currentUserId = null;
+    toggleAuth(true);
   });
 
   // Inicializa a navegação entre seções
   UI.initNavigation();
 
-  // Processa o formulário de Transações
-  const transactionForm = document.getElementById('transaction-form');
-  transactionForm.addEventListener('submit', async (e) => {
+  // Envio de nova transação
+  document.getElementById('transaction-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const description = document.getElementById('transaction-description').value;
     const amount = parseFloat(document.getElementById('transaction-amount').value);
     const type = document.getElementById('transaction-type').value;
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    await addTransaction({ description, amount, type, user_id: user.id });
-    UI.renderTransactions(user.id);
-    UI.renderDashboard(user.id);
-    transactionForm.reset();
+    try {
+      await Storage.addTransaction({ description, amount, type, user_id: currentUserId });
+      await UI.renderAll();
+      e.target.reset();
+    } catch (error) {
+      alert('Erro ao adicionar transação: ' + error.message);
+    }
   });
 
-  // Processa o formulário de Investimentos
-  const investmentForm = document.getElementById('investment-form');
-  investmentForm.addEventListener('submit', async (e) => {
+  // Envio de novo investimento
+  document.getElementById('investment-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('investment-name').value;
     const amount = parseFloat(document.getElementById('investment-amount').value);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    await addInvestment({ name, amount, user_id: user.id });
-    UI.renderInvestments(user.id);
-    investmentForm.reset();
+    try {
+      await Storage.addInvestment({ name, amount, user_id: currentUserId });
+      await UI.renderInvestments();
+      e.target.reset();
+    } catch (error) {
+      alert('Erro ao adicionar investimento: ' + error.message);
+    }
   });
 
-  // Processa o formulário de Metas
-  const goalForm = document.getElementById('goal-form');
-  goalForm.addEventListener('submit', async (e) => {
+  // Envio de nova meta
+  document.getElementById('goal-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const description = document.getElementById('goal-description').value;
     const target = parseFloat(document.getElementById('goal-target').value);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    await addGoal({ description, target, user_id: user.id });
-    UI.renderGoals(user.id);
-    goalForm.reset();
+    try {
+      await Storage.addGoal({ description, target, user_id: currentUserId });
+      await UI.renderGoals();
+      e.target.reset();
+    } catch (error) {
+      alert('Erro ao adicionar meta: ' + error.message);
+    }
+  });
+
+  // Eventos de exclusão (delegação)
+  document.body.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('delete-transaction')) {
+      const id = e.target.dataset.id;
+      try {
+        await Storage.deleteTransaction(id);
+        await UI.renderAll();
+      } catch (error) {
+        alert('Erro ao excluir transação: ' + error.message);
+      }
+    }
+    if (e.target.classList.contains('delete-investment')) {
+      const id = e.target.dataset.id;
+      try {
+        await Storage.deleteInvestment(id);
+        await UI.renderInvestments();
+      } catch (error) {
+        alert('Erro ao excluir investimento: ' + error.message);
+      }
+    }
+    if (e.target.classList.contains('delete-goal')) {
+      const id = e.target.dataset.id;
+      try {
+        await Storage.deleteGoal(id);
+        await UI.renderGoals();
+      } catch (error) {
+        alert('Erro ao excluir meta: ' + error.message);
+      }
+    }
+  });
+
+  // Verifica se há usuário logado ao iniciar
+  await checkUser();
+
+  // Escuta alterações de autenticação
+  supabase.auth.onAuthStateChange((event, session) => {
+    checkUser();
   });
 });
 
-// Funções para exibir/esconder as seções de autenticação e app
-function showAuth() {
-  document.getElementById('auth-section').classList.remove('hidden');
-  document.getElementById('app-section').classList.add('hidden');
-  document.getElementById('app-nav').classList.add('hidden');
+// Alterna entre mostrar a tela de autenticação ou a área do app
+function toggleAuth(showAuth) {
+  document.getElementById('auth-container').style.display = showAuth ? 'block' : 'none';
+  document.getElementById('app-container').style.display = showAuth ? 'none' : 'block';
 }
 
-function showApp() {
-  document.getElementById('auth-section').classList.add('hidden');
-  document.getElementById('app-section').classList.remove('hidden');
-  document.getElementById('app-nav').classList.remove('hidden');
+// Verifica o estado de autenticação e atualiza a interface
+async function checkUser() {
+  const user = await Auth.getUser();
+  if (user) {
+    currentUserId = user.id;
+    toggleAuth(false);
+    await UI.renderAll();
+  } else {
+    toggleAuth(true);
+  }
 }

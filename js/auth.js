@@ -1,32 +1,32 @@
-import { supabase } from './db.js';
+import { supabase } from './supabaseClient.js';
 
-export const login = async (email, password) => {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) {
-    throw error;
+export const Auth = {
+  async signUp(email, password) {
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    return data;
+  },
+
+  async signIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  },
+
+  async signOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error('Erro ao deslogar:', error);
+  },
+
+  // Retorna a sessão atual (incluindo o usuário)
+  async getUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+  },
+
+  onAuthStateChange(callback) {
+    supabase.auth.onAuthStateChange((event, session) => {
+      callback(event, session);
+    });
   }
-  return data;
-};
-
-export const signup = async (email, password) => {
-  const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) {
-    throw error;
-  }
-  return data;
-};
-
-export const logout = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.error('Erro ao realizar logout:', error);
-  }
-};
-
-export const getUser = () => {
-  return supabase.auth.getUser();
-};
-
-export const onAuthStateChange = (callback) => {
-  supabase.auth.onAuthStateChange(callback);
 };
