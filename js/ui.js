@@ -1,6 +1,7 @@
-// Importa nossas funções de CRUD e o Chart.js (já incluído via CDN no HTML)
+import { Chart, registerables } from 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.esm.js';
 import { Storage } from './storage.js';
-import { Chart } from 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.esm.js';
+
+Chart.register(...registerables);
 
 export const UI = {
   chart: null,
@@ -30,7 +31,12 @@ export const UI = {
       document.getElementById('current-balance').textContent = `R$ ${balance.toFixed(2)}`;
 
       const ctx = document.getElementById('balanceChart').getContext('2d');
-      if (UI.chart) UI.chart.destroy();
+
+      // Se já existir um gráfico, destrua-o para evitar conflitos
+      if (UI.chart) {
+        UI.chart.destroy();
+      }
+
       UI.chart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -55,7 +61,7 @@ export const UI = {
       const transactions = await Storage.getTransactions();
       const tbody = document.querySelector('#transactions-table tbody');
       tbody.innerHTML = '';
-      transactions.forEach((t) => {
+      transactions.forEach(t => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${t.description}</td>
@@ -75,7 +81,7 @@ export const UI = {
       const investments = await Storage.getInvestments();
       const tbody = document.querySelector('#investments-table tbody');
       tbody.innerHTML = '';
-      investments.forEach((inv) => {
+      investments.forEach(inv => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${inv.name}</td>
@@ -94,7 +100,7 @@ export const UI = {
       const goals = await Storage.getGoals();
       const tbody = document.querySelector('#goals-table tbody');
       tbody.innerHTML = '';
-      goals.forEach((goal) => {
+      goals.forEach(goal => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${goal.description}</td>
