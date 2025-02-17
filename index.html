@@ -1,312 +1,361 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head>
+    <!-- Meta tags essenciais -->
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="FinanCheck v0.3 - Sua ferramenta completa de organização financeira com gamificação e suporte PWA.">
+    <meta name="keywords" content="finanças, controle financeiro, gamificação, PWA, Supabase, Chart.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinanCheck v0.3 – Organização e Crescimento Financeiro</title>
-    <meta name="description" content="FinanCheck é a ferramenta definitiva para organizar suas finanças e acompanhar seu crescimento financeiro com gamificação e PWA.">
-    <meta name="keywords" content="Finanças, Controle Financeiro, Gamificação, PWA, FinanCheck">
-    <meta name="author" content="Rafael Paragon">
+    <!-- Título da Aplicação -->
+    <title>FinanCheck v0.3 - Organização &amp; Crescimento Financeiro</title>
+    <!-- Link para o arquivo de estilos -->
     <link rel="stylesheet" href="css/styles.css">
+    <!-- Link para o Manifesto da Aplicação (PWA) -->
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icons/icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-    <meta name="theme-color" content="#28a745">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/notyf/3.8.0/notyf.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notyf/3.8.0/notyf.min.css">
-    <meta name="robots" content="index, follow">
+    <!-- Favicon -->
+    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+    <!-- Comentário: Início de configuração extra para SEO -->
+    <!-- Configuração para redes sociais -->
     <meta property="og:title" content="FinanCheck v0.3">
-    <meta property="og:description" content="Organize suas finanças e veja seu crescimento com gamificação.">
-    <meta property="og:image" content="icons/icon-512.png">
-    <meta property="og:url" content="https://seu-dominio.com/">
-    <meta property="og:type" content="website">
-    <!-- Meta adicional -->
-    <meta name="revisit-after" content="7 days">
-    <meta name="distribution" content="global">
-    <!-- Fim dos metadados -->
+    <meta property="og:description" content="Organize suas finanças e acompanhe seu crescimento financeiro de forma divertida e interativa!">
+    <meta property="og:image" content="icons/og-image.png">
+    <meta property="og:url" content="https://seusite.com/financheck">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Fim da configuração para redes sociais -->
+    <!-- Comentário: Incluindo scripts externos se necessário (por exemplo, para analytics) -->
+    <!-- <script src="https://seuscript.com/analytics.js"></script> -->
   </head>
   <body>
-    <!-- Loader inicial -->
-    <div id="loader" class="loader">Carregando...</div>
-    <!-- Seção de Autenticação -->
-    <div id="auth-container" class="container">
-      <header class="auth-header">
+    <!-- ====================================================== -->
+    <!-- Área de Autenticação -->
+    <!-- ====================================================== -->
+    <div id="auth-container">
+      <!-- Cabeçalho de Autenticação -->
+      <header id="auth-header">
         <h1>FinanCheck</h1>
-        <p>Controle suas finanças com facilidade e diversão.</p>
+        <p class="tagline">Organize, evolua e cresça financeiramente!</p>
       </header>
-      <section class="auth-section">
-        <div id="auth-forms">
-          <div id="login-form-container" class="auth-form">
-            <h2>Login</h2>
-            <form id="login-form">
-              <label for="login-email">Email:</label>
-              <input type="email" id="login-email" placeholder="Digite seu email" required>
-              <label for="login-password">Senha:</label>
-              <input type="password" id="login-password" placeholder="Digite sua senha" required>
-              <button type="submit" class="btn">Entrar</button>
-            </form>
-            <p class="auth-switch">Não tem conta? <a href="#" id="show-signup">Cadastre-se aqui</a></p>
-          </div>
-          <div id="signup-form-container" class="auth-form" style="display: none;">
-            <h2>Cadastro</h2>
-            <form id="signup-form">
-              <label for="signup-email">Email:</label>
-              <input type="email" id="signup-email" placeholder="Digite seu email" required>
-              <label for="signup-password">Senha:</label>
-              <input type="password" id="signup-password" placeholder="Crie uma senha" required>
-              <button type="submit" class="btn">Cadastrar</button>
-            </form>
-            <p class="auth-switch">Já tem conta? <a href="#" id="show-login">Faça login</a></p>
-          </div>
-        </div>
-      </section>
+      <!-- Container dos formulários -->
+      <div id="auth-forms">
+        <!-- Formulário de Login -->
+        <section id="login-form-container">
+          <h2>Login</h2>
+          <form id="login-form" novalidate>
+            <input type="email" id="login-email" placeholder="Digite seu email" required>
+            <input type="password" id="login-password" placeholder="Digite sua senha" required>
+            <button type="submit">Entrar</button>
+            <!-- Linha de separação -->
+            <hr>
+            <p class="small-text">Esqueceu a senha? <a href="#recuperar-senha">Recupere aqui</a></p>
+          </form>
+        </section>
+        <!-- Formulário de Cadastro -->
+        <section id="signup-form-container" style="display: none;">
+          <h2>Cadastro</h2>
+          <form id="signup-form" novalidate>
+            <input type="email" id="signup-email" placeholder="Seu email" required>
+            <input type="password" id="signup-password" placeholder="Crie uma senha" required>
+            <button type="submit">Cadastrar</button>
+            <!-- Linha de separação -->
+            <hr>
+            <p class="small-text">Já possui conta? <a href="#" id="show-login">Entrar</a></p>
+          </form>
+        </section>
+        <!-- Seção de Recuperação de Senha (oculta inicialmente) -->
+        <section id="password-recovery-container" style="display: none;">
+          <h2>Recuperar Senha</h2>
+          <form id="recovery-form" novalidate>
+            <input type="email" id="recovery-email" placeholder="Digite seu email" required>
+            <button type="submit">Enviar Instruções</button>
+            <p class="small-text"><a href="#" id="voltar-login">Voltar para Login</a></p>
+          </form>
+        </section>
+      </div>
+      <!-- Rodapé da Área de Autenticação -->
+      <footer id="auth-footer">
+        <p>&copy; 2025 FinanCheck - Desenvolvido por Rafael Paragon</p>
+      </footer>
     </div>
-    <!-- Área principal da aplicação -->
-    <div id="app-container" class="container" style="display: none;">
-      <header class="app-header">
+    <!-- ====================================================== -->
+    <!-- Fim da Área de Autenticação -->
+    <!-- ====================================================== -->
+
+    <!-- ====================================================== -->
+    <!-- Área Principal da Aplicação -->
+    <!-- ====================================================== -->
+    <div id="app-container" style="display: none;">
+      <!-- Cabeçalho da Aplicação -->
+      <header id="app-header">
         <div class="header-top">
           <h1>FinanCheck</h1>
-          <button id="logout-btn" class="btn logout-btn">Sair</button>
-          <button id="menu-toggle" class="menu-toggle" aria-label="Menu">☰</button>
+          <!-- Botão de Logout -->
+          <button id="logout-btn" title="Sair da conta">Sair</button>
+          <!-- Botão de Menu para Mobile -->
+          <button id="menu-toggle" class="menu-toggle" title="Menu">☰</button>
         </div>
-        <nav id="main-nav" class="main-nav">
+        <!-- Barra de Navegação Principal -->
+        <nav id="main-nav">
           <ul>
             <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
             <li><a href="#transacoes" class="nav-link">Transações</a></li>
             <li><a href="#investimentos" class="nav-link">Investimentos</a></li>
             <li><a href="#metas" class="nav-link">Metas</a></li>
-            <li><a href="#crescimento" class="nav-link">Meu Crescimento</a></li>
-            <li><a href="#notificacoes" class="nav-link">Notificações</a></li>
+            <li><a href="#crescimento" class="nav-link">Crescimento</a></li>
+            <li><a href="#perfil" class="nav-link">Perfil</a></li>
             <li><a href="#configuracoes" class="nav-link">Configurações</a></li>
           </ul>
         </nav>
       </header>
-      <main class="app-main">
-        <!-- Dashboard -->
+
+      <!-- Conteúdo Principal -->
+      <main id="app-main">
+        <!-- Seção: Dashboard -->
         <section id="dashboard" class="section active">
-          <div class="widget dashboard-widget">
-            <div class="widget-header">
-              <h2>Dashboard Financeiro</h2>
-              <p>Acompanhe seu saldo e desempenho</p>
-            </div>
-            <div class="widget-body">
-              <div class="balance-display">
-                <p>Saldo Atual:</p>
-                <h3 id="current-balance">R$0,00</h3>
-              </div>
-              <div class="chart-display">
-                <canvas id="balanceChart"></canvas>
-              </div>
-            </div>
-            <div class="widget-footer">
-              <p>Última atualização: <span id="dashboard-updated">--:--</span></p>
-            </div>
+          <h2>Dashboard Financeiro</h2>
+          <div class="widget balance-widget">
+            <p>Saldo Atual:</p>
+            <h3 id="current-balance">R$0,00</h3>
+          </div>
+          <div class="widget chart-widget">
+            <canvas id="balanceChart"></canvas>
+          </div>
+          <!-- Notificações rápidas no dashboard -->
+          <div id="dashboard-notifications" class="widget notification-widget">
+            <p><strong>Notificação:</strong> Mantenha seu registro diário atualizado!</p>
           </div>
         </section>
-        <!-- Transações -->
+
+        <!-- Seção: Transações -->
         <section id="transacoes" class="section">
-          <div class="widget transactions-widget">
-            <div class="widget-header">
-              <h2>Transações</h2>
-              <p>Registre suas entradas e saídas</p>
-            </div>
-            <div class="widget-body">
-              <form id="transaction-form" class="form">
-                <div class="form-group">
-                  <label for="transaction-description">Descrição:</label>
-                  <input type="text" id="transaction-description" placeholder="Ex: Salário" required>
-                </div>
-                <div class="form-group">
-                  <label for="transaction-amount">Valor:</label>
-                  <input type="number" id="transaction-amount" placeholder="Ex: 1500.00" step="0.01" required>
-                </div>
-                <div class="form-group">
-                  <label for="transaction-type">Tipo:</label>
-                  <select id="transaction-type" required>
-                    <option value="income">Receita</option>
-                    <option value="expense">Despesa</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn">Adicionar Transação</button>
-              </form>
-              <table id="transactions-table" class="data-table">
-                <thead>
-                  <tr>
-                    <th>Descrição</th>
-                    <th>Tipo</th>
-                    <th>Valor</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Transações serão inseridas dinamicamente -->
-                </tbody>
-              </table>
-            </div>
-            <div class="widget-footer">
-              <p>Total de transações: <span id="transaction-count">0</span></p>
-            </div>
-          </div>
+          <h2>Minhas Transações</h2>
+          <form id="transaction-form" novalidate>
+            <input type="text" id="transaction-description" placeholder="Descrição da transação" required>
+            <input type="number" id="transaction-amount" placeholder="Valor" step="0.01" required>
+            <select id="transaction-type" required>
+              <option value="" disabled selected>Selecione o tipo</option>
+              <option value="income">Receita</option>
+              <option value="expense">Despesa</option>
+            </select>
+            <button type="submit">Adicionar Transação</button>
+          </form>
+          <table id="transactions-table">
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Linhas de transações serão inseridas aqui via JS -->
+            </tbody>
+          </table>
         </section>
-        <!-- Investimentos -->
+
+        <!-- Seção: Investimentos -->
         <section id="investimentos" class="section">
-          <div class="widget investments-widget">
-            <div class="widget-header">
-              <h2>Investimentos</h2>
-              <p>Gerencie seus investimentos</p>
-            </div>
-            <div class="widget-body">
-              <form id="investment-form" class="form">
-                <div class="form-group">
-                  <label for="investment-name">Nome:</label>
-                  <input type="text" id="investment-name" placeholder="Ex: Ações" required>
-                </div>
-                <div class="form-group">
-                  <label for="investment-amount">Valor Investido:</label>
-                  <input type="number" id="investment-amount" placeholder="Ex: 5000.00" step="0.01" required>
-                </div>
-                <button type="submit" class="btn">Adicionar Investimento</button>
-              </form>
-              <table id="investments-table" class="data-table">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Valor</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Investimentos serão inseridos dinamicamente -->
-                </tbody>
-              </table>
-            </div>
-            <div class="widget-footer">
-              <p>Total de investimentos: <span id="investment-count">0</span></p>
-            </div>
-          </div>
+          <h2>Meus Investimentos</h2>
+          <form id="investment-form" novalidate>
+            <input type="text" id="investment-name" placeholder="Nome do investimento" required>
+            <input type="number" id="investment-amount" placeholder="Valor investido" step="0.01" required>
+            <button type="submit">Adicionar Investimento</button>
+          </form>
+          <table id="investments-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Linhas de investimentos serão inseridas aqui via JS -->
+            </tbody>
+          </table>
         </section>
-        <!-- Metas -->
+
+        <!-- Seção: Metas -->
         <section id="metas" class="section">
-          <div class="widget goals-widget">
-            <div class="widget-header">
-              <h2>Metas Financeiras</h2>
-              <p>Defina e acompanhe suas metas</p>
-            </div>
-            <div class="widget-body">
-              <form id="goal-form" class="form">
-                <div class="form-group">
-                  <label for="goal-description">Descrição:</label>
-                  <input type="text" id="goal-description" placeholder="Ex: Economizar para viagem" required>
-                </div>
-                <div class="form-group">
-                  <label for="goal-target">Valor Alvo:</label>
-                  <input type="number" id="goal-target" placeholder="Ex: 3000.00" step="0.01" required>
-                </div>
-                <button type="submit" class="btn">Adicionar Meta</button>
-              </form>
-              <table id="goals-table" class="data-table">
-                <thead>
-                  <tr>
-                    <th>Descrição</th>
-                    <th>Valor Alvo</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Metas serão inseridas dinamicamente -->
-                </tbody>
-              </table>
-            </div>
-            <div class="widget-footer">
-              <p>Total de metas: <span id="goal-count">0</span></p>
-            </div>
-          </div>
+          <h2>Minhas Metas</h2>
+          <form id="goal-form" novalidate>
+            <input type="text" id="goal-description" placeholder="Descrição da meta" required>
+            <input type="number" id="goal-target" placeholder="Valor Alvo" step="0.01" required>
+            <button type="submit">Adicionar Meta</button>
+          </form>
+          <table id="goals-table">
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Valor Alvo</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Linhas de metas serão inseridas aqui via JS -->
+            </tbody>
+          </table>
         </section>
-        <!-- Crescimento / Gamificação -->
+
+        <!-- Seção: Crescimento (Gamificação) -->
         <section id="crescimento" class="section">
-          <div class="widget growth-widget">
-            <div class="widget-header">
-              <h2>Meu Crescimento Financeiro</h2>
-              <p>Acompanhe seus pontos e evolução</p>
+          <h2>Meu Crescimento Financeiro</h2>
+          <div class="widget progress-widget">
+            <p>Pontos Acumulados:</p>
+            <div class="progress-container">
+              <div id="progress-bar" class="progress-bar"></div>
             </div>
-            <div class="widget-body">
-              <div class="progress-widget">
-                <label for="progress-bar">Progresso:</label>
-                <div class="progress-container">
-                  <div id="progress-bar" class="progress-bar"></div>
-                </div>
-                <p id="progress-text">0 pontos - Nível Iniciante</p>
-              </div>
-              <div class="badge-widget">
-                <h3>Badges Conquistados</h3>
-                <div id="badges-container" class="badges-container">
-                  <!-- Badges serão exibidas aqui -->
-                </div>
-              </div>
-            </div>
-            <div class="widget-footer">
-              <p>Continue registrando suas transações para crescer!</p>
-            </div>
+            <span id="progress-text">0 pontos - Nível Iniciante</span>
+          </div>
+          <div class="widget badge-widget">
+            <p><strong>Badge Atual:</strong> <span id="current-badge">Nenhum</span></p>
           </div>
         </section>
-        <!-- Notificações -->
-        <section id="notificacoes" class="section">
-          <div class="widget notifications-widget">
-            <div class="widget-header">
-              <h2>Notificações</h2>
-              <p>Acompanhe alertas e dicas</p>
-            </div>
-            <div class="widget-body">
-              <ul id="notifications-list" class="notifications-list">
-                <!-- Notificações aparecerão aqui -->
-              </ul>
-            </div>
-            <div class="widget-footer">
-              <p>Sem notificações novas.</p>
-            </div>
+
+        <!-- Seção: Perfil -->
+        <section id="perfil" class="section">
+          <h2>Meu Perfil</h2>
+          <div class="widget profile-widget">
+            <img id="profile-photo" src="icons/default-profile.png" alt="Foto de Perfil" width="100">
+            <p id="profile-email">email@exemplo.com</p>
+            <p id="profile-nome">Nome do Usuário</p>
+            <button id="edit-profile-btn">Editar Perfil</button>
           </div>
         </section>
-        <!-- Configurações -->
+
+        <!-- Seção: Configurações -->
         <section id="configuracoes" class="section">
+          <h2>Configurações</h2>
           <div class="widget settings-widget">
-            <div class="widget-header">
-              <h2>Configurações</h2>
-              <p>Personalize sua experiência</p>
-            </div>
-            <div class="widget-body">
-              <form id="settings-form" class="form">
-                <div class="form-group">
-                  <label for="theme-select">Tema:</label>
-                  <select id="theme-select">
-                    <option value="light">Claro</option>
-                    <option value="dark">Escuro</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="lang-select">Idioma:</label>
-                  <select id="lang-select">
-                    <option value="pt">Português</option>
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn">Salvar Configurações</button>
-              </form>
-            </div>
-            <div class="widget-footer">
-              <p>Configurações atualizadas.</p>
-            </div>
+            <form id="settings-form" novalidate>
+              <label for="theme-select">Tema:</label>
+              <select id="theme-select">
+                <option value="light" selected>Claro</option>
+                <option value="dark">Escuro</option>
+              </select>
+              <label for="lang-select">Idioma:</label>
+              <select id="lang-select">
+                <option value="pt" selected>Português</option>
+                <option value="en">English</option>
+              </select>
+              <button type="submit">Salvar Configurações</button>
+            </form>
           </div>
         </section>
       </main>
-      <footer class="app-footer">
-        <p>&copy; 2025 FinanCheck - Desenvolvido por R Paragon</p>
-        <p>Versão v0.3 – Organização e Crescimento Financeiro</p>
+
+      <!-- Rodapé da Área Aplicativo -->
+      <footer id="app-footer">
+        <p>&copy; 2025 FinanCheck - Todos os direitos reservados.</p>
+        <p>Versão 0.3 - Organize, evolua e conquiste seu crescimento financeiro!</p>
+        <!-- Links úteis -->
+        <nav class="footer-nav">
+          <ul>
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#ajuda">Ajuda</a></li>
+            <li><a href="#contato">Contato</a></li>
+            <li><a href="#termos">Termos de Uso</a></li>
+          </ul>
+        </nav>
       </footer>
     </div>
-    <!-- Scripts externos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="js/app.js"></script>
+    <!-- ====================================================== -->
+    <!-- Fim da Área Principal da Aplicação -->
+    <!-- ====================================================== -->
+
+    <!-- Seção Oculta: Sobre a Aplicação -->
+    <div id="sobre" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-btn" id="close-sobre">&times;</span>
+        <h2>Sobre o FinanCheck</h2>
+        <p>FinanCheck é uma ferramenta completa para organização financeira pessoal, com funcionalidades de gamificação que estimulam o crescimento financeiro. Desenvolvido por Rafael Paragon, ele busca transformar a rotina de controle financeiro em uma experiência motivadora e interativa.</p>
+        <p>Versão 0.3</p>
+      </div>
+    </div>
+
+    <!-- Seção Oculta: Ajuda -->
+    <div id="ajuda" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-btn" id="close-ajuda">&times;</span>
+        <h2>Ajuda e Suporte</h2>
+        <p>Para dúvidas e suporte, entre em contato através do email suporte@financheck.com ou acesse nossa central de ajuda.</p>
+      </div>
+    </div>
+
+    <!-- Seção Oculta: Contato -->
+    <div id="contato" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-btn" id="close-contato">&times;</span>
+        <h2>Contato</h2>
+        <p>Envie suas sugestões e feedback para contato@financheck.com.</p>
+      </div>
+    </div>
+
+    <!-- Seção Oculta: Termos de Uso -->
+    <div id="termos" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-btn" id="close-termos">&times;</span>
+        <h2>Termos de Uso</h2>
+        <p>Leia nossos termos de uso em detalhes para entender seus direitos e responsabilidades ao usar o FinanCheck.</p>
+      </div>
+    </div>
+
+    <!-- Scripts adicionais para modais e interações -->
+    <script>
+      // Função para abrir modais
+      function openModal(id) {
+        document.getElementById(id).style.display = 'block';
+      }
+      // Função para fechar modais
+      function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+      }
+      // Adiciona eventos aos links do rodapé
+      document.querySelectorAll('.footer-nav a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const modalId = e.target.getAttribute('href').substring(1);
+          openModal(modalId);
+        });
+      });
+      // Adiciona eventos de fechamento aos botões de fechar modais
+      document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.parentElement.parentElement.style.display = 'none';
+        });
+      });
+      // Fecha modal ao clicar fora do conteúdo
+      window.addEventListener('click', (e) => {
+        document.querySelectorAll('.modal').forEach(modal => {
+          if (e.target == modal) {
+            modal.style.display = 'none';
+          }
+        });
+      });
+    </script>
+
+    <!-- Script para exibir mensagem de instalação do PWA (se suportado) -->
+    <script>
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Exibe uma mensagem para o usuário
+        const installBanner = document.createElement('div');
+        installBanner.id = 'install-banner';
+        installBanner.innerHTML = '<p>Instale o FinanCheck e tenha sua organização financeira na palma da mão!</p><button id="install-btn">Instalar</button>';
+        document.body.appendChild(installBanner);
+        document.getElementById('install-btn').addEventListener('click', async () => {
+          installBanner.style.display = 'none';
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log(`Usuário escolheu: ${outcome}`);
+          deferredPrompt = null;
+        });
+      });
+    </script>
+    <!-- Fim dos scripts adicionais -->
+
   </body>
 </html>

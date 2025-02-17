@@ -1,352 +1,445 @@
+// ====================================================================
+// FinanCheck v0.3 - Arquivo Principal: app.js
+// Desenvolvido por Rafael Paragon
+// Este arquivo orquestra toda a lógica da aplicação, integrando
+// autenticação, armazenamento, gamificação, UI, temas e modais.
+// ====================================================================
+
+// Importações dos módulos essenciais
 import { supabase } from './supabaseClient.js';
 import { Auth } from './auth.js';
 import { Storage } from './storage.js';
 import { UI } from './ui.js';
 import { Gamification } from './gamification.js';
 
-// Inicializa o sistema de analytics
-function initAnalytics() {
-  console.log("Analytics iniciado: FinanCheck v0.3");
-}
-initAnalytics();
-
-// Variável global para o ID do usuário logado
+// Variável global para armazenar o ID do usuário logado
 let currentUserId = null;
 
-// Função utilitária para registrar mensagens de debug
-function debugLog(message) {
-  console.debug(`[DEBUG] ${new Date().toISOString()}: ${message}`);
-}
-debugLog("Iniciando app.js...");
+// Variável para armazenar configurações do tema e idioma (persistidas localmente)
+let appSettings = {
+  theme: 'light',
+  language: 'pt'
+};
 
-// Função para inicializar o sistema de notificações
-function initNotifications() {
-  window.notyf = new Notyf({
-    duration: 5000,
-    position: { x: 'right', y: 'top' },
-    ripple: true,
-    dismissible: true
-  });
-  debugLog("Sistema de notificações inicializado.");
-}
-initNotifications();
-
-// Função para exibir notificações
-function notifyUser(message, type) {
-  if (window.notyf) {
-    switch (type) {
-      case "success":
-        window.notyf.success(message);
-        break;
-      case "error":
-        window.notyf.error(message);
-        break;
-      case "warning":
-        window.notyf.open({ type: 'warning', message: message });
-        break;
-      case "info":
-        window.notyf.open({ type: 'info', message: message });
-        break;
-      default:
-        window.notyf.open({ type: 'default', message: message });
-    }
-  }
-  debugLog("Notificação exibida: " + message);
+// Função para salvar configurações no localStorage
+function saveSettings(settings) {
+  localStorage.setItem('financheck-settings', JSON.stringify(settings));
+  console.log('[App] Configurações salvas:', settings);
 }
 
-// Função para reiniciar o timer de inatividade
-let inactivityTimer;
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    notifyUser("Sessão expirada por inatividade.", "warning");
-    Auth.signOut();
-    toggleAuth(true);
-  }, 1800000); // 30 minutos
-  debugLog("Timer de inatividade reiniciado.");
-}
-document.addEventListener('mousemove', resetInactivityTimer);
-document.addEventListener('keydown', resetInactivityTimer);
-resetInactivityTimer();
-
-// Função para atualizar o timestamp do dashboard
-function updateDashboardTimestamp() {
-  const now = new Date().toLocaleTimeString();
-  const tsElem = document.getElementById('dashboard-updated');
-  if (tsElem) {
-    tsElem.textContent = now;
+// Função para carregar configurações do localStorage
+function loadSettings() {
+  const settings = localStorage.getItem('financheck-settings');
+  if (settings) {
+    appSettings = JSON.parse(settings);
+    console.log('[App] Configurações carregadas:', appSettings);
+  } else {
+    saveSettings(appSettings);
   }
 }
-setInterval(updateDashboardTimestamp, 10000);
 
-// Função para exportar dados de transações para CSV
-async function exportDataToCSV() {
-  debugLog("Exportando dados para CSV.");
-  let csvContent = "data:text/csv;charset=utf-8,";
-  csvContent += "Descrição,Tipo,Valor,Data\n";
-  const transactions = await Storage.getTransactions();
-  transactions.forEach((t) => {
-    const row = [t.description, t.type, t.amount, t.created_at].join(",");
-    csvContent += row + "\n";
-  });
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "financheck_transactions.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  debugLog("Exportação para CSV concluída.");
+// Função para aplicar o tema na interface
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  console.log('[App] Tema aplicado:', theme);
 }
 
-// Função para limpar dados do usuário (para testes)
-async function clearUserData() {
-  debugLog("Limpando dados do usuário para teste.");
-  localStorage.clear();
-  notifyUser("Dados do usuário limpos.", "warning");
-}
-clearUserData();
-
-// Função para simular bônus de pontos periódico
-function simulatePointBonus() {
-  debugLog("Simulando bônus de pontos.");
-  setTimeout(() => {
-    Gamification.updateProgress(5);
-    notifyUser("Bônus diário: +5 pontos!", "success");
-    UI.renderCrescimento();
-  }, 60000);
-}
-simulatePointBonus();
-
-// Função para registrar eventos de clique duplo e abrir modal de transação
-function openTransactionModal(transactionId) {
-  debugLog("Abrindo modal para transação ID: " + transactionId);
-  const modalOverlay = document.createElement('div');
-  modalOverlay.className = 'modal-overlay';
-  const modalContent = document.createElement('div');
-  modalContent.className = 'modal-content';
-  modalContent.innerHTML = `<h3>Detalhes da Transação</h3>
-    <p>ID: ${transactionId}</p>
-    <button id="close-modal" class="btn">Fechar</button>`;
-  modalOverlay.appendChild(modalContent);
-  document.body.appendChild(modalOverlay);
-  document.getElementById('close-modal').addEventListener('click', () => {
-    document.body.removeChild(modalOverlay);
-    debugLog("Modal de transação fechado.");
-  });
-}
-document.body.addEventListener('dblclick', (e) => {
-  if (e.target.classList.contains('transaction-detail')) {
-    const id = e.target.dataset.id;
-    openTransactionModal(id);
+// Função para atualizar o idioma (simplesmente altera textos básicos)
+function applyLanguage(lang) {
+  // Em uma implementação completa, você carregaria um arquivo de tradução
+  if (lang === 'pt') {
+    document.getElementById('auth-header').querySelector('p.tagline').textContent = "Organize, evolua e cresça financeiramente!";
+  } else if (lang === 'en') {
+    document.getElementById('auth-header').querySelector('p.tagline').textContent = "Organize, evolve and grow financially!";
   }
-});
+  console.log('[App] Idioma aplicado:', lang);
+}
 
-// Função para buscar notícias financeiras externas (exemplo)
-async function fetchFinancialNews() {
-  debugLog("Buscando notícias financeiras.");
-  try {
-    const response = await fetch('https://api.example.com/financial-news');
-    const news = await response.json();
-    const notificationsList = document.getElementById('notifications-list');
-    notificationsList.innerHTML = '';
-    news.articles.forEach(article => {
-      const li = document.createElement('li');
-      li.textContent = article.title;
-      notificationsList.appendChild(li);
+// Função para inicializar eventos de configurações do app
+function initSettingsEvents() {
+  const themeSelect = document.getElementById('theme-select');
+  const langSelect = document.getElementById('lang-select');
+  if (themeSelect) {
+    themeSelect.addEventListener('change', (e) => {
+      appSettings.theme = e.target.value;
+      saveSettings(appSettings);
+      applyTheme(appSettings.theme);
     });
-    debugLog("Notícias financeiras atualizadas.");
-  } catch (error) {
-    debugLog("Erro ao buscar notícias: " + error.message);
+  }
+  if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+      appSettings.language = e.target.value;
+      saveSettings(appSettings);
+      applyLanguage(appSettings.language);
+    });
   }
 }
-fetchFinancialNews();
 
-// Função para exportar relatórios mensais (exemplo avançado)
-async function exportMonthlyReport() {
-  debugLog("Exportando relatório mensal.");
-  const transactions = await Storage.getTransactions();
-  let totalIncome = 0, totalExpense = 0;
-  transactions.forEach(t => {
-    if (t.type === 'income') totalIncome += parseFloat(t.amount);
-    else totalExpense += parseFloat(t.amount);
+// Função para inicializar eventos de modais extras
+function initModalEvents() {
+  const footerLinks = document.querySelectorAll('.footer-nav a');
+  footerLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const modalId = e.target.getAttribute('href').substring(1);
+      openModal(modalId);
+    });
   });
-  const report = {
-    month: new Date().toLocaleString('default', { month: 'long' }),
-    totalIncome: totalIncome,
-    totalExpense: totalExpense,
-    netBalance: totalIncome - totalExpense
-  };
-  const reportJson = JSON.stringify(report, null, 2);
-  const blob = new Blob([reportJson], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'relatorio_mensal.json';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  debugLog("Relatório mensal exportado.");
-}
-
-// Função para monitorar a conectividade e notificar o usuário
-function monitorConnectivity() {
-  window.addEventListener('offline', () => {
-    notifyUser("Você está offline.", "error");
-    debugLog("Evento offline detectado.");
+  const closeButtons = document.querySelectorAll('.close-btn');
+  closeButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      closeModal(btn.parentElement.parentElement.id);
+    });
   });
-  window.addEventListener('online', () => {
-    notifyUser("Você voltou a estar online.", "success");
-    debugLog("Evento online detectado.");
-    if (currentUserId) UI.renderAll(currentUserId);
+  window.addEventListener('click', (e) => {
+    document.querySelectorAll('.modal').forEach((modal) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
   });
 }
-monitorConnectivity();
 
-// Função para atualizar dados automaticamente a cada 5 minutos
-setInterval(async () => {
-  debugLog("Atualização automática de dados.");
-  if (currentUserId) await UI.renderAll(currentUserId);
-}, 300000);
+// Função para abrir um modal pelo ID
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) {
+    modal.style.display = 'block';
+    console.log('[App] Modal aberto:', id);
+  }
+}
 
-// Função para atualizar dados quando a janela ganha foco
-window.addEventListener('focus', async () => {
-  debugLog("Janela focada, atualizando dados.");
-  if (currentUserId) await UI.renderAll(currentUserId);
-});
+// Função para fechar um modal pelo ID
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) {
+    modal.style.display = 'none';
+    console.log('[App] Modal fechado:', id);
+  }
+}
 
-// Função para registrar o Service Worker (PWA)
-async function registerServiceWorker() {
+// Função para inicializar a lógica do PWA (exibição do banner de instalação)
+function initPWAInstallPrompt() {
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBanner = document.createElement('div');
+    installBanner.id = 'install-banner';
+    installBanner.style.position = 'fixed';
+    installBanner.style.bottom = '0';
+    installBanner.style.width = '100%';
+    installBanner.style.background = '#28a745';
+    installBanner.style.color = '#fff';
+    installBanner.style.textAlign = 'center';
+    installBanner.style.padding = '1rem';
+    installBanner.innerHTML = '<p>Instale o FinanCheck e gerencie suas finanças em qualquer lugar!</p><button id="install-btn">Instalar</button>';
+    document.body.appendChild(installBanner);
+    document.getElementById('install-btn').addEventListener('click', async () => {
+      installBanner.style.display = 'none';
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log('[PWA] Usuário escolheu:', outcome);
+      deferredPrompt = null;
+    });
+  });
+}
+
+// Função para inicializar o Service Worker
+function initServiceWorker() {
   if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('[PWA] Service Worker registrado com sucesso:', registration);
+      })
+      .catch(error => {
+        console.error('[PWA] Erro ao registrar o Service Worker:', error);
+      });
+  }
+}
+
+// Função para inicializar os eventos de autenticação
+function initAuthEvents() {
+  document.getElementById('show-signup').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('login-form-container').style.display = 'none';
+    document.getElementById('signup-form-container').style.display = 'block';
+    console.log('[Auth] Alternou para tela de cadastro.');
+  });
+  document.getElementById('show-login').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('signup-form-container').style.display = 'none';
+    document.getElementById('login-form-container').style.display = 'block';
+    console.log('[Auth] Alternou para tela de login.');
+  });
+  document.getElementById('voltar-login')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('password-recovery-container').style.display = 'none';
+    document.getElementById('login-form-container').style.display = 'block';
+    console.log('[Auth] Retornou para tela de login.');
+  });
+  document.getElementById('recovery-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const recoveryEmail = document.getElementById('recovery-email').value;
+    // Aqui seria implementada a lógica de recuperação de senha com Supabase
+    console.log('[Auth] Pedido de recuperação de senha para:', recoveryEmail);
+    alert('Instruções de recuperação enviadas para ' + recoveryEmail);
+    document.getElementById('password-recovery-container').style.display = 'none';
+    document.getElementById('login-form-container').style.display = 'block';
+  });
+}
+
+// Função para inicializar eventos de logout
+function initLogoutEvent() {
+  document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('/service-worker.js');
-      debugLog("Service Worker registrado: " + registration.scope);
+      await Auth.signOut();
+      currentUserId = null;
+      toggleAuth(true);
+      console.log('[Auth] Logout realizado com sucesso.');
     } catch (error) {
-      debugLog("Erro no registro do Service Worker: " + error.message);
+      console.error('[Auth] Erro ao efetuar logout:', error);
     }
-  }
+  });
 }
-registerServiceWorker();
 
-// Função para checar a autenticação do usuário
+// Função para inicializar o envio de formulários de cadastro e login
+function initFormEvents() {
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    try {
+      await Auth.signIn(email, password);
+      console.log('[Auth] Login efetuado para:', email);
+      await checkUser();
+    } catch (error) {
+      console.error('[Auth] Erro no login:', error);
+      alert('Erro no login: ' + error.message);
+    }
+  });
+  document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    try {
+      await Auth.signUp(email, password);
+      console.log('[Auth] Cadastro realizado para:', email);
+      alert('Cadastro realizado com sucesso! Verifique seu email para confirmar.');
+      document.getElementById('signup-form-container').style.display = 'none';
+      document.getElementById('login-form-container').style.display = 'block';
+    } catch (error) {
+      console.error('[Auth] Erro no cadastro:', error);
+      alert('Erro no cadastro: ' + error.message);
+    }
+  });
+}
+
+// Função para inicializar eventos de formulários financeiros
+function initFinancialFormEvents() {
+  document.getElementById('transaction-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const description = document.getElementById('transaction-description').value;
+    const amount = parseFloat(document.getElementById('transaction-amount').value);
+    const type = document.getElementById('transaction-type').value;
+    try {
+      await Storage.addTransaction({ description, amount, type, user_id: currentUserId });
+      console.log('[Finance] Transação adicionada:', description, amount, type);
+      // Atualiza gamificação: 10 pontos por transação
+      Gamification.updateProgress(10);
+      await UI.renderAll(currentUserId);
+      e.target.reset();
+    } catch (error) {
+      console.error('[Finance] Erro ao adicionar transação:', error);
+      alert('Erro ao adicionar transação: ' + error.message);
+    }
+  });
+  document.getElementById('investment-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('investment-name').value;
+    const amount = parseFloat(document.getElementById('investment-amount').value);
+    try {
+      await Storage.addInvestment({ name, amount, user_id: currentUserId });
+      console.log('[Finance] Investimento adicionado:', name, amount);
+      await UI.renderInvestments();
+      e.target.reset();
+    } catch (error) {
+      console.error('[Finance] Erro ao adicionar investimento:', error);
+      alert('Erro ao adicionar investimento: ' + error.message);
+    }
+  });
+  document.getElementById('goal-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const description = document.getElementById('goal-description').value;
+    const target = parseFloat(document.getElementById('goal-target').value);
+    try {
+      await Storage.addGoal({ description, target, user_id: currentUserId });
+      console.log('[Finance] Meta adicionada:', description, target);
+      await UI.renderGoals();
+      e.target.reset();
+    } catch (error) {
+      console.error('[Finance] Erro ao adicionar meta:', error);
+      alert('Erro ao adicionar meta: ' + error.message);
+    }
+  });
+}
+
+// Função para inicializar eventos de exclusão (delegação de eventos)
+function initDeleteEvents() {
+  document.body.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('delete-transaction')) {
+      const id = e.target.dataset.id;
+      try {
+        await Storage.deleteTransaction(id);
+        console.log('[Finance] Transação excluída:', id);
+        await UI.renderAll(currentUserId);
+      } catch (error) {
+        console.error('[Finance] Erro ao excluir transação:', error);
+        alert('Erro ao excluir transação: ' + error.message);
+      }
+    }
+    if (e.target.classList.contains('delete-investment')) {
+      const id = e.target.dataset.id;
+      try {
+        await Storage.deleteInvestment(id);
+        console.log('[Finance] Investimento excluído:', id);
+        await UI.renderInvestments();
+      } catch (error) {
+        console.error('[Finance] Erro ao excluir investimento:', error);
+        alert('Erro ao excluir investimento: ' + error.message);
+      }
+    }
+    if (e.target.classList.contains('delete-goal')) {
+      const id = e.target.dataset.id;
+      try {
+        await Storage.deleteGoal(id);
+        console.log('[Finance] Meta excluída:', id);
+        await UI.renderGoals();
+      } catch (error) {
+        console.error('[Finance] Erro ao excluir meta:', error);
+        alert('Erro ao excluir meta: ' + error.message);
+      }
+    }
+  });
+}
+
+// Função para verificar se o usuário está autenticado e ajustar a interface
 async function checkUser() {
-  debugLog("Verificando autenticação do usuário.");
-  const user = await Auth.getUser();
-  if (user) {
-    currentUserId = user.id;
-    toggleAuth(false);
-    debugLog("Usuário autenticado: " + currentUserId);
-    await UI.renderAll(currentUserId);
-  } else {
-    toggleAuth(true);
-    debugLog("Nenhum usuário autenticado.");
-  }
-}
-
-// Função para alternar entre a tela de autenticação e a área do app
-function toggleAuth(showAuth) {
-  const authContainer = document.getElementById('auth-container');
-  const appContainer = document.getElementById('app-container');
-  if (showAuth) {
-    authContainer.style.display = 'block';
-    appContainer.style.display = 'none';
-    debugLog("Exibindo tela de autenticação.");
-  } else {
-    authContainer.style.display = 'none';
-    appContainer.style.display = 'block';
-    debugLog("Exibindo área do aplicativo.");
-  }
-}
-
-// Listener para mudanças de estado de autenticação
-supabase.auth.onAuthStateChange((event, session) => {
-  debugLog("Mudança de estado de autenticação: " + event);
-  checkUser();
-});
-
-// Função para alterar tema (claro/escuro)
-function toggleTheme(theme) {
-  document.body.className = theme;
-  localStorage.setItem('theme', theme);
-  debugLog("Tema alterado para: " + theme);
-}
-document.getElementById('theme-select')?.addEventListener('change', (e) => {
-  toggleTheme(e.target.value);
-});
-const savedTheme = localStorage.getItem('theme') || 'light';
-toggleTheme(savedTheme);
-
-// Função para alterar idioma
-function changeLanguage(lang) {
-  localStorage.setItem('lang', lang);
-  debugLog("Idioma alterado para: " + lang);
-  notifyUser("Idioma alterado. (Exemplo: tradução não implementada)", "info");
-}
-document.getElementById('lang-select')?.addEventListener('change', (e) => {
-  changeLanguage(e.target.value);
-});
-
-// Função para salvar configurações do usuário
-document.getElementById('settings-form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  debugLog("Salvando configurações do usuário.");
-  const theme = document.getElementById('theme-select').value;
-  const lang = document.getElementById('lang-select').value;
-  toggleTheme(theme);
-  changeLanguage(lang);
-  notifyUser("Configurações salvas.", "success");
-});
-
-// Função para exportar relatório mensal (chamada por botão, se implementado)
-document.getElementById('export-report-btn')?.addEventListener('click', () => {
-  exportMonthlyReport();
-});
-
-// Função para limpar dados do usuário (para testes)
-document.getElementById('clear-data-btn')?.addEventListener('click', async () => {
-  await clearUserData();
-});
-
-// Função para simular clique em um elemento (exemplo de utilidade)
-function simulateClick(elementId) {
-  const elem = document.getElementById(elementId);
-  if (elem) {
-    elem.click();
-    debugLog("Clique simulado no elemento: " + elementId);
-  }
-}
-simulateClick('dummy-element');
-
-// Função para logar eventos de desempenho
-function logPerformance() {
-  const t = performance.now();
-  debugLog("Tempo de desempenho: " + t + "ms");
-}
-setInterval(logPerformance, 15000);
-
-// Função para buscar dados adicionais (exemplo)
-async function fetchAdditionalData() {
-  debugLog("Buscando dados adicionais...");
   try {
-    const res = await fetch('https://api.example.com/additional-data');
-    const data = await res.json();
-    debugLog("Dados adicionais recebidos: " + JSON.stringify(data));
+    const user = await Auth.getUser();
+    if (user) {
+      currentUserId = user.id;
+      console.log('[Auth] Usuário autenticado:', user.email);
+      toggleAuth(false);
+      await UI.renderAll(currentUserId);
+    } else {
+      console.log('[Auth] Nenhum usuário autenticado.');
+      toggleAuth(true);
+    }
   } catch (error) {
-    debugLog("Erro ao buscar dados adicionais: " + error.message);
+    console.error('[Auth] Erro ao verificar usuário:', error);
   }
 }
-fetchAdditionalData();
 
-// Função para lidar com erros globais
-window.onerror = function(message, source, lineno, colno, error) {
-  debugLog(`Erro global: ${message} em ${source}:${lineno}:${colno}`);
-};
+// Função para alternar a exibição entre tela de autenticação e área do app
+function toggleAuth(showAuth) {
+  document.getElementById('auth-container').style.display = showAuth ? 'block' : 'none';
+  document.getElementById('app-container').style.display = showAuth ? 'none' : 'block';
+  console.log('[App] Alternando interface. Autenticado:', !showAuth);
+}
 
-// Função para lidar com rejeições não tratadas
-window.onunhandledrejection = function(event) {
-  debugLog("Rejeição não tratada: " + event.reason);
-};
+// Função para inicializar o registro de eventos do Service Worker (PWA)
+function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('[PWA] Service Worker registrado com sucesso:', registration.scope);
+      })
+      .catch(error => {
+        console.error('[PWA] Erro no registro do Service Worker:', error);
+      });
+  }
+}
 
-// Finalização da inicialização do app
-debugLog("App.js carregado e inicializado completamente.");
-// Fim do arquivo app.js
+// Função principal de inicialização da aplicação
+async function initApp() {
+  console.log('[App] Inicializando FinanCheck v0.3...');
+  loadSettings();
+  applyTheme(appSettings.theme);
+  applyLanguage(appSettings.language);
+  initSettingsEvents();
+  initModalEvents();
+  initPWAInstallPrompt();
+  registerServiceWorker();
+  initAuthEvents();
+  initFormEvents();
+  initFinancialFormEvents();
+  initDeleteEvents();
+  initLogoutEvent();
+  await checkUser();
+  console.log('[App] FinanCheck v0.3 inicializado com sucesso.');
+}
+
+// Adiciona evento de DOMContentLoaded para iniciar a aplicação
+document.addEventListener('DOMContentLoaded', () => {
+  initApp();
+});
+
+// --------------------------------------------------------------------
+// Funções utilitárias adicionais para debug e testes
+// --------------------------------------------------------------------
+function debugLog(message) {
+  console.log('[DEBUG]', message);
+}
+
+function clearLocalData() {
+  localStorage.removeItem('gamification');
+  localStorage.removeItem('financheck-settings');
+  console.log('[App] Dados locais limpos.');
+}
+
+// Função para simular incremento de pontos (para testes)
+function simulatePointsIncrement(increment) {
+  const current = Gamification.getProgress().points;
+  Gamification.updateProgress(increment);
+  console.log('[Simulação] Pontos incrementados de', current, 'para', Gamification.getProgress().points);
+  UI.renderCrescimento();
+}
+
+// Função para forçar recarregamento da interface
+async function forceReloadUI() {
+  console.log('[App] Forçando recarregamento da interface...');
+  await UI.renderAll(currentUserId);
+  console.log('[App] Interface recarregada.');
+}
+
+// Função para alternar temporariamente o modo debug (ativa logs extras)
+let debugMode = false;
+function toggleDebugMode() {
+  debugMode = !debugMode;
+  if (debugMode) {
+    console.log('[App] Modo debug ativado.');
+  } else {
+    console.log('[App] Modo debug desativado.');
+  }
+}
+
+// Adiciona atalhos de teclado para funções de debug
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'd') {
+    toggleDebugMode();
+  }
+  if (e.ctrlKey && e.key === 'r') {
+    forceReloadUI();
+  }
+  if (e.ctrlKey && e.key === 'c') {
+    clearLocalData();
+  }
+  if (e.ctrlKey && e.key === 'p') {
+    simulatePointsIncrement(20);
+  }
+});
+
+// --------------------------------------------------------------------
+// Fim das funções utilitárias
+// --------------------------------------------------------------------
