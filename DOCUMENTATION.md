@@ -1,7 +1,3 @@
-Abaixo segue a documentação completa do FinanCheck v0.2, desenvolvida por Rafael Paragon, com todas as explicações, detalhes do código e um exemplo de README.md para o repositório no GitHub. Nos exemplos de código, dados sensíveis (como URLs e chaves do Supabase) foram substituídos por _placeholders_.
-
----
-
 # FinanCheck v0.2 – Documentação Completa
 
 ## Introdução
