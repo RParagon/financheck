@@ -2,7 +2,7 @@
 
 **Autor:** Rafael Paragon  
 **Versão:** v0.2  
-**Data:** [Insira a data de lançamento]
+**Data:** [16/02/2025]
 
 ---
 
