@@ -6,7 +6,7 @@
  * exportação/importação de dados e simulação de bônus.
  */
 
-import { v4 as uuidv4 } from 'https://cdn.skypack.dev/uuid';
+import { v4 as uuidv4 } from 'https://esm.sh/uuid';
 
 export const Gamification = {
 

@@ -586,6 +586,7 @@
   /* Background Gradient Utility */
   .bg-gradient {
     background: linear-gradient(45deg, #28a745, #007bff);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
