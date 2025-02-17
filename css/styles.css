@@ -1,194 +1,225 @@
-/* ========================
-   FinanCheck v0.3 - Stylesheet
-   Desenvolvido por Rafael Paragon
-   ======================== */
-
-/* Reset e base */
-* {
+/* ===================================================
+   Reset CSS - Reinicia margens, paddings e configura box-sizing
+   =================================================== */
+   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-  html, body {
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
     background-color: #f4f4f4;
     color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* ===================================================
+     Variáveis CSS para temas
+     =================================================== */
+  :root {
+    --primary-color: #28a745;
+    --secondary-color: #dc3545;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --header-bg: #333;
+    --header-text: #fff;
+    --modal-bg: rgba(0, 0, 0, 0.8);
+    --modal-content-bg: #fff;
+    --transition-speed: 0.3s;
+    --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-medium: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  /* Tema Escuro */
+  [data-theme="dark"] {
+    --primary-color: #1abc9c;
+    --secondary-color: #e74c3c;
+    --background-color: #222;
+    --text-color: #ddd;
+    --header-bg: #111;
+    --header-text: #ddd;
+    --modal-content-bg: #333;
+  }
+  
+  /* ===================================================
+     Tipografia e Elementos Básicos
+     =================================================== */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--header-text);
+    margin-bottom: 0.5rem;
+  }
+  p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+  }
+  a:hover {
+    color: var(--secondary-color);
+  }
+  ul {
+    list-style: none;
   }
   img {
     max-width: 100%;
-    height: auto;
+    display: block;
   }
   
-  /* Container Geral */
+  /* ===================================================
+     Utilitários de Espaçamento e Layout
+     =================================================== */
   .container {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
   }
+  .mt-1 { margin-top: 1rem; }
+  .mt-2 { margin-top: 2rem; }
+  .mb-1 { margin-bottom: 1rem; }
+  .mb-2 { margin-bottom: 2rem; }
+  .p-1 { padding: 1rem; }
+  .p-2 { padding: 2rem; }
+  .text-center { text-align: center; }
+  .text-right { text-align: right; }
+  .text-left { text-align: left; }
   
-  /* Loader */
-  .loader {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    color: #28a745;
-    z-index: 1000;
-    font-weight: bold;
-    letter-spacing: 0.1rem;
-  }
-  
-  /* ========================
-     Autenticação
-     ======================== */
+  /* ===================================================
+     Estilos para a Área de Autenticação
+     =================================================== */
   #auth-container {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: 5rem auto;
+    background: var(--modal-content-bg);
     padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
     text-align: center;
-    margin-top: 5rem;
   }
-  .auth-header h1 {
+  #auth-header h1 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
   }
-  .auth-header p {
-    font-size: 1rem;
-    color: #666;
+  #auth-header .tagline {
+    font-size: 1.1rem;
     margin-bottom: 1rem;
+    color: var(--text-color);
   }
-  .auth-section {
-    margin-top: 1rem;
-  }
-  .auth-form {
-    margin: 1rem 0;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-  }
-  .auth-form h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-  .auth-form form {
+  #auth-forms form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  .auth-form label {
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-  }
-  .auth-form input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .auth-form .btn {
-    background: #28a745;
-    color: #fff;
-    border: none;
+  #auth-forms input {
     padding: 0.75rem;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    cursor: pointer;
     font-size: 1rem;
   }
-  .auth-form .btn:hover {
-    background: #218838;
+  #auth-forms button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background var(--transition-speed);
   }
-  .auth-switch {
-    font-size: 0.9rem;
-    margin-top: 1rem;
+  #auth-forms button:hover {
+    background: var(--secondary-color);
   }
-  .auth-switch a {
-    color: #28a745;
-    text-decoration: none;
+  #auth-forms hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 1rem 0;
   }
-  .auth-switch a:hover {
-    text-decoration: underline;
+  .small-text {
+    font-size: 0.8rem;
+    color: var(--text-color);
   }
   
-  /* ========================
-     App Container e Header
-     ======================== */
+  /* ===================================================
+     Estilos da Área Principal da Aplicação
+     =================================================== */
   #app-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
   }
-  .app-header {
-    background: #333;
-    color: #fff;
+  
+  /* Header da Aplicação */
+  #app-header {
+    background: var(--header-bg);
+    color: var(--header-text);
     padding: 1rem;
-    border-bottom: 3px solid #28a745;
   }
   .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .app-header h1 {
+  .header-top h1 {
     font-size: 1.8rem;
   }
-  .logout-btn {
-    background: #dc3545;
+  #logout-btn {
+    background: var(--secondary-color);
     border: none;
     padding: 0.5rem 1rem;
-    color: #fff;
     border-radius: 4px;
+    color: #fff;
     cursor: pointer;
+    transition: background var(--transition-speed);
   }
-  .logout-btn:hover {
+  #logout-btn:hover {
     background: #c82333;
   }
   .menu-toggle {
-    font-size: 1.5rem;
-    background: transparent;
+    background: none;
     border: none;
-    color: #fff;
+    font-size: 1.8rem;
+    color: var(--header-text);
     cursor: pointer;
   }
-  
-  /* Navegação */
-  .main-nav ul {
-    list-style: none;
-    display: none;
+  #main-nav ul {
+    display: flex;
     flex-direction: column;
-    padding: 0;
-    margin-top: 1rem;
+    align-items: center;
+    padding: 0.5rem 0;
+    background: var(--header-bg);
   }
-  .main-nav ul li {
+  #main-nav ul li {
     margin: 0.5rem 0;
   }
-  .main-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 0.5rem;
-    display: block;
-    transition: background 0.3s;
+  #main-nav ul li a {
+    color: var(--header-text);
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background var(--transition-speed);
   }
-  .main-nav ul li a:hover,
-  .main-nav ul li a.active-link::after {
-    background: #555;
-  }
-  .main-nav ul li a.active-link::after {
-    content: '';
-    display: block;
-    height: 2px;
-    background: #28a745;
-    margin-top: 0.25rem;
+  #main-nav ul li a:hover {
+    background: var(--primary-color);
   }
   
-  /* ========================
-     Main Content & Widgets
-     ======================== */
-  .app-main {
+  /* ===================================================
+     Estilos para o Main e Seções
+     =================================================== */
+  main {
     flex: 1;
-    padding: 1rem 0;
+    padding: 1rem;
+    background: var(--background-color);
   }
   .section {
     display: none;
@@ -197,534 +228,3433 @@
   .section.active {
     display: block;
   }
+  
+  /* Widgets Comuns */
   .widget {
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 1.5rem;
     margin: 1rem 0;
-    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: var(--shadow-light);
+    transition: transform var(--transition-speed);
   }
-  .widget-header {
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-  .widget-header h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-  }
-  .widget-header p {
-    font-size: 0.9rem;
-    color: #666;
-  }
-  .widget-body {
-    padding: 0.5rem 0;
-  }
-  .widget-footer {
-    border-top: 1px solid #ddd;
-    padding-top: 0.5rem;
-    text-align: right;
-    font-size: 0.8rem;
-    color: #666;
+  .widget:hover {
+    transform: translateY(-3px);
   }
   
-  /* ========================
-     Dashboard Widget
-     ======================== */
-  .dashboard-widget .balance-display {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  .dashboard-widget .balance-display p {
+  /* Balance Widget */
+  .balance-widget p {
     font-size: 1rem;
-    margin-bottom: 0.25rem;
+    color: var(--text-color);
   }
-  .dashboard-widget .balance-display h3 {
+  .balance-widget h3 {
     font-size: 2rem;
-    color: #28a745;
+    margin-top: 0.5rem;
+    color: var(--primary-color);
   }
-  .chart-display {
+  
+  /* Chart Widget */
+  .chart-widget {
+    position: relative;
     width: 100%;
     height: 300px;
-    position: relative;
   }
   
-  /* ========================
-     Formulários e Tabelas
-     ======================== */
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  .form-group label {
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-  }
-  .form-group input,
-  .form-group select {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .data-table {
+  /* Table Styles */
+  table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
   }
-  .data-table th,
-  .data-table td {
+  table th, table td {
     padding: 0.75rem;
-    border: 1px solid #ddd;
     text-align: left;
-    font-size: 0.9rem;
+    border-bottom: 1px solid #ddd;
   }
-  .data-table th {
+  table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  table tbody tr:hover {
     background: #f1f1f1;
   }
-  .data-table tr:nth-child(even) {
-    background: #fafafa;
-  }
   
-  /* Botões */
-  .btn {
-    background: #28a745;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.3s ease;
-  }
-  .btn:hover {
-    background: #218838;
-  }
-  .delete-btn {
-    background: #dc3545;
-  }
-  .delete-btn:hover {
-    background: #c82333;
-  }
-  .detail-btn {
-    background: #007bff;
-  }
-  .detail-btn:hover {
-    background: #0069d9;
-  }
-  
-  /* ========================
-     Progress & Crescimento
-     ======================== */
-  .progress-widget {
+  /* Formulários Financeiros */
+  form#transaction-form,
+  form#investment-form,
+  form#goal-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin-bottom: 1rem;
   }
+  form#transaction-form input,
+  form#investment-form input,
+  form#goal-form input,
+  form#transaction-form select {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  form#transaction-form button,
+  form#investment-form button,
+  form#goal-form button {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+  }
+  form#transaction-form button:hover,
+  form#investment-form button:hover,
+  form#goal-form button:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Seção de Crescimento/Gamificação
+     =================================================== */
+  #crescimento {
+    text-align: center;
+  }
+  .progress-widget {
+    margin: 1rem auto;
+    max-width: 500px;
+  }
+  .progress-widget p {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
   .progress-container {
+    width: 100%;
     background: #e9ecef;
     border-radius: 10px;
     overflow: hidden;
     height: 20px;
-    margin: 0.5rem 0;
+    margin-bottom: 0.5rem;
   }
   .progress-bar {
-    background: #28a745;
+    background: var(--primary-color);
     height: 100%;
     width: 0%;
-    transition: width 0.5s ease;
+    transition: width 0.5s ease-in-out;
   }
-  .badges-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .badge {
-    background: #ffc107;
-    color: #fff;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
+  .badge-widget {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
   }
   
-  /* ========================
-     Modal Styles
-     ======================== */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
+  /* ===================================================
+     Seção de Perfil e Configurações
+     =================================================== */
+  .profile-widget {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    animation: fadeIn 0.3s forwards;
-  }
-  .modal-content {
-    background: #fff;
-    border-radius: 8px;
     padding: 1.5rem;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    transform: scale(0.9);
-    animation: zoomIn 0.3s forwards;
-  }
-  .modal-content h3 {
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    background: #fff;
     margin-bottom: 1rem;
-    font-size: 1.5rem;
   }
-  .modal-content .modal-body {
+  .profile-widget img {
+    border-radius: 50%;
     margin-bottom: 1rem;
+  }
+  .profile-widget p {
     font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
   }
-  #close-modal {
-    background: #dc3545;
-    color: #fff;
+  #edit-profile-btn {
+    background: var(--primary-color);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
+    color: #fff;
     cursor: pointer;
+    transition: background var(--transition-speed);
   }
-  
-  /* ========================
-     Notificações
-     ======================== */
-  .notifications-list {
-    list-style: none;
-    padding: 0;
+  #edit-profile-btn:hover {
+    background: var(--secondary-color);
   }
-  .notifications-list li {
-    background: #e2e3e5;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-  }
-  
-  /* ========================
-     Configurações
-     ======================== */
-  .settings-widget .form-group {
-    margin-bottom: 1rem;
+  .settings-widget form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
   }
   .settings-widget label {
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    color: var(--text-color);
   }
   .settings-widget select {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
-  /* ========================
-     Footer
-     ======================== */
-  .app-footer {
-    background: #333;
+  .settings-widget button {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 4px;
     color: #fff;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+  }
+  .settings-widget button:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Modais
+     =================================================== */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg);
+    animation: fadeInModal 0.5s;
+  }
+  .modal-content {
+    background-color: var(--modal-content-bg);
+    margin: 10% auto;
+    padding: 2rem;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+  }
+  .close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color var(--transition-speed);
+  }
+  .close-btn:hover,
+  .close-btn:focus {
+    color: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para o Rodapé
+     =================================================== */
+  footer {
+    background: var(--header-bg);
+    color: var(--header-text);
     text-align: center;
     padding: 1rem;
     font-size: 0.9rem;
   }
-  .app-footer p {
+  .footer-nav ul {
+    list-style: none;
+    padding: 0;
     margin: 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .footer-nav ul li a {
+    color: var(--header-text);
+    text-decoration: underline;
+    font-size: 0.85rem;
   }
   
-  /* ========================
-     Animações & Transições
-     ======================== */
+  /* ===================================================
+     Animações e Transições
+     =================================================== */
   @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInModal {
     from { opacity: 0; }
     to { opacity: 1; }
   }
-  @keyframes slideIn {
-    from { transform: translateX(-100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+  .animate {
+    animation: fadeIn 0.5s ease-in-out;
   }
-  @keyframes zoomIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  .fade-out {
+    opacity: 0;
+    transition: opacity var(--transition-speed);
   }
-  .slide-in {
-    animation: slideIn 0.5s ease-in-out;
-  }
-  .zoom-in {
-    animation: zoomIn 0.5s ease-in-out;
+  .fade-in {
+    opacity: 1;
+    transition: opacity var(--transition-speed);
   }
   
-  /* ========================
-     Responsive Styles
-     ======================== */
-  @media (min-width: 576px) {
-    .auth-form, .widget, .modal-content {
+  /* ===================================================
+     Efeitos de Hover e Interação
+     =================================================== */
+  button:hover, a:hover {
+    transform: scale(1.02);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+  
+  /* ===================================================
+     Classes de Visibilidade e Exibição
+     =================================================== */
+  .hidden {
+    display: none !important;
+  }
+  .visible {
+    display: block !important;
+  }
+  .flex {
+    display: flex;
+  }
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* ===================================================
+     Responsividade Mobile-First
+     =================================================== */
+  @media (max-width: 600px) {
+    body {
+      font-size: 14px;
+    }
+    #auth-container {
+      width: 90%;
       padding: 1.5rem;
     }
-    .app-header h1 {
-      font-size: 2rem;
+    header, footer {
+      padding: 0.8rem;
     }
-    .widget-header h2 {
-      font-size: 1.75rem;
+    .header-top h1 {
+      font-size: 1.5rem;
     }
-    .data-table th, .data-table td {
-      font-size: 1rem;
+    #main-nav ul {
+      flex-direction: column;
     }
-    .chart-display {
-      height: 400px;
+    form#transaction-form,
+    form#investment-form,
+    form#goal-form {
+      flex-direction: column;
     }
-  }
-  @media (min-width: 768px) {
-    .main-nav ul {
-      display: flex !important;
-      flex-direction: row;
-      justify-content: center;
-    }
-    .data-table th, .data-table td {
-      padding: 1rem;
-    }
-  }
-  @media (min-width: 992px) {
-    .container {
-      width: 80%;
+    table th, table td {
+      font-size: 0.85rem;
+      padding: 0.5rem;
     }
     .widget {
-      margin: 1.5rem 0;
-    }
-    .modal-content {
-      max-width: 600px;
+      padding: 1rem;
+      margin: 0.5rem 0;
     }
   }
-  @media (min-width: 1200px) {
-    .container {
+  
+  /* ===================================================
+     Responsividade para Tablets
+     =================================================== */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    body {
+      font-size: 15px;
+    }
+    #auth-container {
       width: 70%;
     }
-  }
-  /* Extra Media Query para telas extra grandes */
-  @media (min-width: 1400px) {
-    .container {
-      width: 60%;
+    header, footer {
+      padding: 1rem;
     }
-    .modal-content {
-      max-width: 700px;
+    #main-nav ul {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+    table th, table td {
+      font-size: 0.9rem;
+    }
+    .widget {
+      padding: 1.2rem;
     }
   }
   
-  /* ========================
-     Utility Classes (Extras)
-     ======================== */
-  .text-center { text-align: center; }
-  .text-left { text-align: left; }
-  .text-right { text-align: right; }
-  .float-left { float: left; }
-  .float-right { float: right; }
-  .clearfix::after { content: ""; display: table; clear: both; }
-  .position-relative { position: relative; }
-  .position-absolute { position: absolute; }
-  .z-index-100 { z-index: 100; }
-  .z-index-200 { z-index: 200; }
-  .width-100 { width: 100%; }
-  .height-100 { height: 100%; }
-  .max-width-100 { max-width: 100%; }
-  .opacity-0 { opacity: 0; }
-  .opacity-50 { opacity: 0.5; }
-  .opacity-100 { opacity: 1; }
-  .transition { transition: all 0.3s ease; }
+  /* ===================================================
+     Classes para Temas Customizados
+     =================================================== */
+  .theme-light {
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --header-bg: #333;
+    --header-text: #fff;
+  }
+  .theme-dark {
+    --background-color: #222;
+    --text-color: #ddd;
+    --header-bg: #111;
+    --header-text: #ddd;
+  }
   
-  /* Spacing Utilities */
-  .m-0 { margin: 0 !important; }
-  .mt-1 { margin-top: 1rem !important; }
-  .mt-2 { margin-top: 2rem !important; }
-  .mt-3 { margin-top: 3rem !important; }
-  .mt-4 { margin-top: 4rem !important; }
-  .mt-5 { margin-top: 5rem !important; }
-  .mb-1 { margin-bottom: 1rem !important; }
-  .mb-2 { margin-bottom: 2rem !important; }
-  .mb-3 { margin-bottom: 3rem !important; }
-  .mb-4 { margin-bottom: 4rem !important; }
-  .mb-5 { margin-bottom: 5rem !important; }
-  .p-1 { padding: 1rem !important; }
-  .p-2 { padding: 2rem !important; }
-  .p-3 { padding: 3rem !important; }
-  .p-4 { padding: 4rem !important; }
+  /* ===================================================
+     Estilos para Notificações Customizadas
+     =================================================== */
+  .notification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow-medium);
+    z-index: 2000;
+    opacity: 0.95;
+    transition: opacity 0.5s;
+  }
+  .notif-info {
+    background: var(--primary-color);
+  }
+  .notif-warning {
+    background: var(--secondary-color);
+  }
+  .notif-success {
+    background: #2ecc71;
+  }
   
-  /* Border Utilities */
-  .border { border: 1px solid #ddd !important; }
-  .border-top { border-top: 1px solid #ddd !important; }
-  .border-bottom { border-bottom: 1px solid #ddd !important; }
-  .rounded { border-radius: 8px !important; }
-  .rounded-sm { border-radius: 4px !important; }
-  .rounded-lg { border-radius: 12px !important; }
-  .rounded-full { border-radius: 50% !important; }
-  .rounded-circle { border-radius: 50% !important; }
+  /* ===================================================
+     Estilos para Debug e Indicadores
+     =================================================== */
+  .debug-alert {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    background: #ffc107;
+    color: #333;
+    padding: 0.75rem;
+    border-radius: 4px;
+    z-index: 3000;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-medium);
+  }
   
-  /* Font Utilities */
-  .fw-bold { font-weight: bold !important; }
-  .fw-normal { font-weight: normal !important; }
-  .fs-small { font-size: 0.8rem !important; }
-  .fs-medium { font-size: 1rem !important; }
-  .fs-large { font-size: 1.5rem !important; }
-  .text-uppercase { text-transform: uppercase; }
-  .text-lowercase { text-transform: lowercase; }
-  .text-capitalize { text-transform: capitalize; }
+  /* ===================================================
+     Estilos para Banner de Instalação do PWA
+     =================================================== */
+  #install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--primary-color);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    z-index: 2500;
+    animation: fadeIn 0.5s;
+  }
+  #install-banner button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 1rem;
+    transition: background var(--transition-speed);
+  }
+  #install-banner button:hover {
+    background: #c82333;
+  }
   
-  /* Background Utilities */
-  .bg-light { background-color: #f8f9fa !important; }
-  .bg-dark { background-color: #343a40 !important; }
-  .bg-primary { background-color: #007bff !important; }
-  .bg-success { background-color: #28a745 !important; }
-  .bg-warning { background-color: #ffc107 !important; }
-  .bg-danger { background-color: #dc3545 !important; }
+  /* ===================================================
+     Estilos para Elementos Específicos de Interface
+     =================================================== */
+  .widget.notification-widget {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    font-size: 1rem;
+  }
+  .profile-widget {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    text-align: center;
+    margin: 1rem auto;
+    max-width: 400px;
+  }
+  .profile-widget img {
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 2px solid var(--primary-color);
+  }
+  .profile-widget p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+  }
+  #edit-profile-btn {
+    background: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+  }
+  #edit-profile-btn:hover {
+    background: var(--secondary-color);
+  }
   
-  /* Background Gradient Utility */
-  .bg-gradient {
-    background: linear-gradient(45deg, #28a745, #007bff);
-    background-clip: text;
+  /* ===================================================
+     Animações Adicionais para Feedback Visual
+     =================================================== */
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .slide-in {
+    animation: slideIn 0.5s ease-out;
+  }
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+  }
+  .bounce {
+    animation: bounce 1s;
+  }
+  
+  /* ===================================================
+     Estilos para Formulários Adicionais (Configurações)
+     =================================================== */
+  .settings-widget {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    max-width: 400px;
+    margin: 1rem auto;
+  }
+  .settings-widget label {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .settings-widget select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .settings-widget button {
+    width: 100%;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+  }
+  .settings-widget button:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Indicadores de Tema e Idioma (no header)
+     =================================================== */
+  #theme-indicator, #language-indicator {
+    font-size: 0.85rem;
+    color: var(--header-text);
+    margin: 0 0.5rem;
+  }
+  
+  /* ===================================================
+     Estilos para Debugging e Informações Adicionais
+     =================================================== */
+  #debug-indicator {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: #343a40;
+    color: #fff;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    border-top-left-radius: 4px;
+    z-index: 3000;
+  }
+  
+  /* ===================================================
+     Estilos Extras para Scroll e Transições Gerais
+     =================================================== */
+  html {
+    scroll-behavior: smooth;
+  }
+  a.scroll-link {
+    cursor: pointer;
+    transition: color var(--transition-speed);
+  }
+  a.scroll-link:hover {
+    color: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Layouts Flexíveis e Grid
+     =================================================== */
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes Dinâmicos e Interativos
+     =================================================== */
+  .dynamic-content {
+    padding: 1rem;
+    background: #fff;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    transition: background var(--transition-speed);
+  }
+  .dynamic-content:hover {
+    background: #f9f9f9;
+  }
+  .interactive-button {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+  }
+  .interactive-button:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+  }
+  
+  /* ===================================================
+     Estilos para Formatação de Datas e Relatórios
+     =================================================== */
+  .date-report {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 0.5rem;
+  }
+  .report-box {
+    background: #eef;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Carregamento e Indicadores de Processamento
+     =================================================== */
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .processing-indicator {
+    font-size: 1rem;
+    color: var(--primary-color);
+    margin: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Borda e Destaque de Elementos
+     =================================================== */
+  .outline-highlight {
+    border: 2px dashed var(--secondary-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  .box-shadow-lg {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  }
+  
+  /* ===================================================
+     Estilos para Feedback Visual e Mensagens de Sucesso/Erro
+     =================================================== */
+  .alert {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  .alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  .alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+  }
+  
+  /* ===================================================
+     Estilos para Tabelas de Dados Adicionais
+     =================================================== */
+  .data-table {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .data-table th, .data-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  .data-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+  }
+  .data-table tr:hover {
+    background: #f1f1f1;
+  }
+  
+  /* ===================================================
+     Estilos para Inputs e Botões Personalizados
+     =================================================== */
+  .input-custom {
+    padding: 0.5rem;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border var(--transition-speed);
+  }
+  .input-custom:focus {
+    border-color: var(--primary-color);
+  }
+  .button-custom {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+  }
+  .button-custom:hover {
+    background: var(--secondary-color);
+    transform: scale(1.03);
+  }
+  
+  /* ===================================================
+     Estilos para Animações e Transições Adicionais
+     =================================================== */
+  .animate-scale {
+    animation: scaleUp 0.5s ease-out;
+  }
+  @keyframes scaleUp {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .animate-slide {
+    animation: slideIn 0.5s ease-out;
+  }
+  @keyframes slideIn {
+    0% { transform: translateX(50%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Status e Informações
+     =================================================== */
+  .status-message {
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+  .status-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .status-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+  }
+  .status-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Navegação Secundária
+     =================================================== */
+  .secondary-nav {
+    background: #eee;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .secondary-nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .secondary-nav ul li a {
+    font-size: 0.9rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Ícones e Imagens Pequenas
+     =================================================== */
+  .icon-small {
+    width: 24px;
+    height: 24px;
+  }
+  .icon-medium {
+    width: 32px;
+    height: 32px;
+  }
+  .icon-large {
+    width: 64px;
+    height: 64px;
+  }
+  
+  /* ===================================================
+     Estilos para Widgets de Estatísticas e Relatórios
+     =================================================== */
+  .stats-widget {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+  }
+  .stats-widget h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+  }
+  .stats-widget .stat {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* ===================================================
+     Estilos para Seções de Feedback e Comentários
+     =================================================== */
+  .feedback-section {
+    background: #f9f9f9;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .feedback-section textarea {
+    width: 100%;
+    height: 100px;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  .feedback-section button {
+    margin-top: 0.5rem;
+    background: var(--primary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+  }
+  .feedback-section button:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes Customizados para Gamificação
+     =================================================== */
+  .gamification-notif {
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    background: var(--primary-color);
+    color: #fff;
+    box-shadow: var(--shadow-light);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2100;
+    opacity: 0.95;
+    transition: opacity 0.5s;
+  }
+  
+  /* ===================================================
+     Estilos Específicos para o PWA e Banner de Instalação
+     =================================================== */
+  #install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    z-index: 2500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #install-banner p {
+    margin-right: 1rem;
+    font-size: 1rem;
+  }
+  #install-banner button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+  }
+  #install-banner button:hover {
+    background: #c82333;
+  }
+  
+  /* ===================================================
+     Estilos para Animações de Entrada e Saída de Modais
+     =================================================== */
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .modal-content {
+    animation: modalFadeIn 0.4s ease-out;
+  }
+  
+  /* ===================================================
+     Estilos para Indicadores de Carregamento e Processamento
+     =================================================== */
+  .loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+  .loader-text {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-top: 0.5rem;
+  }
+  
+  /* ===================================================
+     Estilos para Alertas e Mensagens de Erro
+     =================================================== */
+  .alert-box {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .alert-box.success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+  }
+  .alert-box.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-color: #bee5eb;
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Progresso Avançadas
+     =================================================== */
+  .progress-bar-advanced {
+    height: 25px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 12px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+    transition: width 0.5s ease;
+  }
+  
+  /* ===================================================
+     Estilos para Contêineres de Layout Especializados
+     =================================================== */
+  .boxed-container {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 6px;
+    background: #fff;
+    margin: 1rem 0;
+  }
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .card-header {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+  }
+  .card-body {
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Títulos e Subtítulos Customizados
+     =================================================== */
+  .title-large {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+  .title-medium {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--header-text);
+  }
+  .title-small {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Lista Personalizados
+     =================================================== */
+  .custom-list {
+    list-style-type: square;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .custom-list li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Ícones com Texto
+     =================================================== */
+  .icon-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .icon-text img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* ===================================================
+     Estilos para Tooltips e Dicas
+     =================================================== */
+  .tooltip {
+    position: relative;
+    cursor: pointer;
+  }
+  .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0.5rem;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -70px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Formulário Avançados
+     =================================================== */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+  }
+  .form-control {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border var(--transition-speed);
+  }
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens Informativas e de Status
+     =================================================== */
+  .info-message {
+    background: #e2e3e5;
+    color: #383d41;
+    padding: 0.75rem;
+    border-left: 4px solid #6c757d;
+    margin: 1rem 0;
+    border-radius: 4px;
+  }
+  .status-message {
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 0.5rem;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes Interativos Avançados
+     =================================================== */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 25px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: var(--primary-color);
+  }
+  input:checked + .slider:before {
+    transform: translateX(25px);
+  }
+  
+  /* ===================================================
+     Estilos para Footer Avançado com Links
+     =================================================== */
+  .footer-nav {
+    margin-top: 1rem;
+  }
+  .footer-nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .footer-nav ul li a {
+    font-size: 0.85rem;
+    color: var(--header-text);
+    text-decoration: underline;
+  }
+  
+  /* ===================================================
+     Estilos para Notas de Rodapé e Copyright
+     =================================================== */
+  .footer-note {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  /* ===================================================
+     Estilos para Classes de Debug (Exibem informações temporárias)
+     =================================================== */
+  .debug-info {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: #000;
+    color: #fff;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    z-index: 4000;
+  }
+  
+  /* ===================================================
+     Estilos para Animações de Entrada e Saída Personalizadas
+     =================================================== */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  /* ===================================================
+     Estilos para a Página de Reset de Senha (Exemplo)
+     =================================================== */
+  .reset-password {
+    max-width: 400px;
+    margin: 5rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
+  }
+  .reset-password h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .reset-password form input {
+    margin-bottom: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Seção de Relatórios e Estatísticas Extras
+     =================================================== */
+  .report-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 6px;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+  }
+  .report-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+  }
+  .report-section .report-item {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Formatação de Código e Pré-visualização
+     =================================================== */
+  pre.code-block {
+    background: #272822;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Listagem Avançada
+     =================================================== */
+  .list-advanced {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  .list-advanced li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  .list-advanced li:last-child {
+    border-bottom: none;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Carrossel (Slider)
+     =================================================== */
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    margin: 1rem 0;
+  }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  .carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .carousel-button.prev {
+    left: 10px;
+  }
+  .carousel-button.next {
+    right: 10px;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Modal Avançados
+     =================================================== */
+  .modal-advanced {
+    display: none;
+    position: fixed;
+    z-index: 5000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg);
+    animation: fadeInModal 0.4s;
+  }
+  .modal-advanced-content {
+    background-color: var(--modal-content-bg);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+  }
+  .modal-advanced .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #aaa;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color var(--transition-speed);
+  }
+  .modal-advanced .close-btn:hover {
+    color: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Inputs com Ícones (exemplo)
+     =================================================== */
+  .input-icon {
+    position: relative;
+  }
+  .input-icon input {
+    padding-left: 2.5rem;
+  }
+  .input-icon .icon {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 0.7;
+  }
+  
+  /* ===================================================
+     Estilos para Tabelas Avançadas com Efeitos de Hover
+     =================================================== */
+  .table-advanced {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .table-advanced th,
+  .table-advanced td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  .table-advanced th {
+    background: #f7f7f7;
+    font-weight: bold;
+  }
+  .table-advanced tbody tr:hover {
+    background: #f0f0f0;
+  }
+  
+  /* ===================================================
+     Estilos para Botões com Estados Diferenciados
+     =================================================== */
+  .button-primary {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .button-primary:active {
+    background: #218838;
+  }
+  .button-secondary {
+    background: var(--secondary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .button-secondary:active {
+    background: #c82333;
+  }
+  
+  /* ===================================================
+     Estilos para Blocos de Código e Debug
+     =================================================== */
+  .code-container {
+    background: #f1f1f1;
+    padding: 1rem;
+    border-left: 4px solid var(--primary-color);
+    margin: 1rem 0;
+    font-family: monospace;
+    font-size: 0.9rem;
+  }
+  .debug-message {
+    background: #222;
+    color: #fff;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes Interativos de Relatórios
+     =================================================== */
+  .report-header {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+  .report-content {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 1rem;
+  }
+  .report-item {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  .report-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* ===================================================
+     Estilos para Animações de Exibição e Ocultação
+     =================================================== */
+  .fade {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .fade.show {
+    opacity: 1;
+  }
+  
+  /* ===================================================
+     Estilos para Layout de Cards e Painéis
+     =================================================== */
+  .card-panel {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
+    margin: 1rem 0;
+  }
+  .card-panel h3 {
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+  }
+  .card-panel p {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Barra de Navegação Lateral (se necessário)
+     =================================================== */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100%;
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 1rem;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    z-index: 1500;
+  }
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  .sidebar ul li {
+    margin: 0.75rem 0;
+  }
+  .sidebar ul li a {
+    color: var(--header-text);
+    font-size: 1rem;
+    text-decoration: none;
+  }
+  
+  /* ===================================================
+     Estilos para Breadcrumbs (Navegação de Contexto)
+     =================================================== */
+  .breadcrumbs {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: #f8f8f8;
+    border-radius: 4px;
+  }
+  .breadcrumbs a {
+    color: var(--primary-color);
+  }
+  .breadcrumbs span {
+    margin: 0 0.5rem;
+  }
+  
+  /* ===================================================
+     Estilos para Títulos com Sub-linha (Decorativo)
+     =================================================== */
+  .title-decor {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    font-size: 1.6rem;
+    color: var(--header-text);
+  }
+  .title-decor::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    transform: translateX(-50%);
+    border-radius: 3px;
+  }
+  
+  /* ===================================================
+     Estilos para Ícones de Ação e Botões Flutuantes
+     =================================================== */
+  .floating-action {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: #fff;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 2000;
+    transition: background 0.3s;
+  }
+  .floating-action:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Confirmação e Diálogos
+     =================================================== */
+  .confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--modal-content-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
+    z-index: 3000;
+    max-width: 90%;
+  }
+  .confirm-dialog h4 {
+    margin-bottom: 1rem;
+    color: var(--header-text);
+  }
+  .confirm-dialog button {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: background 0.3s;
+  }
+  .confirm-dialog button.cancel-btn {
+    background: var(--secondary-color);
+  }
+  .confirm-dialog button:hover {
+    opacity: 0.9;
+  }
+  
+  /* ===================================================
+     Estilos para Marcação de Texto e Destaques
+     =================================================== */
+  .highlight {
+    background: yellow;
+    padding: 0.2rem;
+    border-radius: 2px;
+  }
+  .strikethrough {
+    text-decoration: line-through;
+  }
+  
+  /* ===================================================
+     Estilos para Layout de Grid para Widgets Múltiplos
+     =================================================== */
+  .widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Progresso Customizadas
+     =================================================== */
+  .progress-custom {
+    position: relative;
+    width: 100%;
+    background: #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem 0;
+    height: 25px;
+  }
+  .progress-custom-fill {
+    height: 100%;
+    background: var(--primary-color);
+    width: 0%;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* ===================================================
+     Estilos para Animações de Rotação (Ex.: Loader)
+     =================================================== */
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .rotate {
+    animation: rotate 1s linear infinite;
+  }
+  
+  /* ===================================================
+     Estilos para Formulários de Feedback e Comentários
+     =================================================== */
+  .feedback-form {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+  }
+  .feedback-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  .feedback-form button {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .feedback-form button:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Notificação de Atualização
+     =================================================== */
+  .update-notice {
+    background: #fff;
+    padding: 1rem;
+    border-left: 4px solid var(--primary-color);
+    font-size: 0.95rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+  }
+  
+  /* ===================================================
+     Estilos para Indicadores de Carregamento em Listas
+     =================================================== */
+  .list-loader {
+    text-align: center;
+    padding: 1rem;
+    font-size: 1rem;
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Modo de Leitura ou Foco
+     =================================================== */
+  .read-mode {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 6px;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Navegação Secundárias
+     =================================================== */
+  .secondary-nav {
+    background: #ddd;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .secondary-nav a {
+    font-size: 0.9rem;
+    color: #333;
+    padding: 0.5rem;
+    transition: color 0.3s;
+  }
+  .secondary-nav a:hover {
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Formatação de Listas de Tarefas
+     =================================================== */
+  .task-list {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+  }
+  .task-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  .task-list li:last-child {
+    border-bottom: none;
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Alerta Temporárias
+     =================================================== */
+  .temp-alert {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    z-index: 5000;
+    box-shadow: var(--shadow-medium);
+    opacity: 0.95;
+    transition: opacity 0.5s;
+  }
+  
+  /* ===================================================
+     Estilos para Widgets de Informações Dinâmicas
+     =================================================== */
+  .info-widget {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 6px;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+    text-align: center;
+  }
+  .info-widget h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+  }
+  .info-widget p {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Progresso com Texto Interno
+     =================================================== */
+  .progress-with-text {
+    position: relative;
+    background: #e9ecef;
+    border-radius: 8px;
+    height: 30px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .progress-with-text .progress-label {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    line-height: 30px;
+    font-size: 1rem;
+    color: #333;
+  }
+  .progress-with-text .progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    width: 0%;
+    transition: width 0.5s;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Navegação Superior Fixa
+     =================================================== */
+  .fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: var(--header-bg);
+    color: var(--header-text);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  /* ===================================================
+     Estilos para Espaçamentos Extra e Margens de Seção
+     =================================================== */
+  .section-padding {
+    padding: 2rem 1rem;
+  }
+  .mt-extra {
+    margin-top: 3rem;
+  }
+  .mb-extra {
+    margin-bottom: 3rem;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos Interativos com Hover Efeito de Sombra
+     =================================================== */
+  .hover-shadow:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* ===================================================
+     Estilos para Divisórias e Separadores
+     =================================================== */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    margin: 1.5rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Foco e Acessibilidade
+     =================================================== */
+  .focus-outline:focus {
+    outline: 3px solid var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Feedback Visual de Erros em Formulários
+     =================================================== */
+  .input-error {
+    border-color: var(--secondary-color) !important;
+  }
+  .error-message {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    margin-top: 0.25rem;
+  }
+  
+  /* ===================================================
+     Estilos para Notas e Comentários de Sistema
+     =================================================== */
+  .system-note {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+  
+  /* ===================================================
+     Estilos para Containers de Conteúdo Flexíveis
+     =================================================== */
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+  .flex-item {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  /* ===================================================
+     Estilos para Seções com Fundo Diferenciado
+     =================================================== */
+  .section-alt {
+    background: #fafafa;
+    padding: 2rem 1rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+  }
+  
+  /* ===================================================
+     Estilos para Botões de Ação Flutuante em Telas Pequenas
+     =================================================== */
+  .floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: #fff;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-medium);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .floating-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  /* ===================================================
+     Estilos para Inputs com Feedback Visual Dinâmico
+     =================================================== */
+  .input-feedback {
+    position: relative;
+  }
+  .input-feedback .feedback-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Layout de Cards com Efeitos de Hover
+     =================================================== */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: box-shadow 0.3s;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-medium);
+  }
+  .card-header {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .card-body {
+    padding: 1rem;
+    color: var(--text-color);
+    font-size: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Progresso Horizontais
+     =================================================== */
+  .horizontal-progress {
+    width: 100%;
+    height: 20px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .horizontal-progress .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-color);
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Notificação Flutuante
+     =================================================== */
+  .toast-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow-medium);
+    opacity: 0.95;
+    z-index: 3000;
+    transition: opacity 0.5s;
+  }
+  
+  /* ===================================================
+     Estilos para Ícones e Vetores em SVG
+     =================================================== */
+  .svg-icon {
+    fill: var(--primary-color);
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* ===================================================
+     Estilos para Blocos de Conteúdo Expandíveis (Accordion)
+     =================================================== */
+  .accordion {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .accordion-item {
+    border-bottom: 1px solid #ddd;
+  }
+  .accordion-item:last-child {
+    border-bottom: none;
+  }
+  .accordion-header {
+    padding: 1rem;
+    cursor: pointer;
+    background: #f7f7f7;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  .accordion-header:hover {
+    background: #eaeaea;
+  }
+  .accordion-body {
+    padding: 1rem;
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+  .accordion-body.active {
+    display: block;
+  }
+  
+  /* ===================================================
+     Estilos para Seções de Conteúdo com Borda Decorativa
+     =================================================== */
+  .decorative-border {
+    border: 2px solid var(--primary-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Sucesso, Aviso e Erro
+     =================================================== */
+  .message-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .message-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .message-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Ícones de Navegação e Botões de Ação
+     =================================================== */
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  .action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s;
+  }
+  .action-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  /* ===================================================
+     Estilos para Layout de Grid para Galerias e Listas de Imagens
+     =================================================== */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .gallery-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .gallery-item:hover {
+    transform: scale(1.03);
+  }
+  
+  /* ===================================================
+     Estilos para Indicadores de Paginação
+     =================================================== */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .pagination button {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .pagination button:hover {
+    background: #f0f0f0;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Caixa de Busca
+     =================================================== */
+  .search-box {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .search-box input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    font-size: 1rem;
+  }
+  .search-box button {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .search-box button:hover {
+    background: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens Temporárias e Toasts
+     =================================================== */
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    z-index: 2100;
+    opacity: 0.95;
+    transition: opacity 0.5s;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Carregamento de Dados
+     =================================================== */
+  .data-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Navegação Fixas e Responsivas
+     =================================================== */
+  .fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--header-bg);
+    color: var(--header-text);
+    z-index: 1500;
+    box-shadow: var(--shadow-medium);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Atualização e Notificações Globais
+     =================================================== */
+  .global-notice {
+    background: var(--primary-color);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2500;
+    box-shadow: var(--shadow-medium);
+  }
+  
+  /* ===================================================
+     Estilos para Barra de Progresso Interna Customizada
+     =================================================== */
+  .internal-progress {
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 20px;
+    margin: 1rem 0;
+  }
+  .internal-progress .fill {
+    height: 100%;
+    background: var(--primary-color);
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  
+  /* ===================================================
+     Estilos para Inputs com Validação Visual
+     =================================================== */
+  .input-valid {
+    border-color: #28a745;
+  }
+  .input-invalid {
+    border-color: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Rodapés Secundários e Créditos
+     =================================================== */
+  .sub-footer {
+    background: #444;
+    color: #ccc;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Efeitos de Transição e Transformação
+     =================================================== */
+  .transition-transform {
+    transition: transform 0.3s ease;
+  }
+  .scale-up:hover {
+    transform: scale(1.05);
+  }
+  
+  /* ===================================================
+     Estilos para Containers com Margens Internas (Padding)
+     =================================================== */
+  .padding-container {
+    padding: 2rem;
+    background: #fff;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos com Fundo Gradiente
+     =================================================== */
+  .gradient-bg {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Texto Animado
+     =================================================== */
+  .animated-text {
+    animation: textBlink 1.5s infinite;
+  }
+  @keyframes textBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Layout Avançado com Flexbox
+     =================================================== */
+  .flex-evenly {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Espaçamento Vertical e Horizontal
+     =================================================== */
+  .v-space-1 { margin-top: 1rem; }
+  .v-space-2 { margin-top: 2rem; }
+  .h-space-1 { margin-left: 1rem; }
+  .h-space-2 { margin-left: 2rem; }
+  
+  /* ===================================================
+     Estilos para Blocos de Conteúdo com Fundo Sombreado
+     =================================================== */
+  .shadow-box {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Ícones com Efeitos de Hover
+     =================================================== */
+  .icon-hover:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+  }
+  
+  /* ===================================================
+     Estilos para Marcação de Texto Especial
+     =================================================== */
+  .marked-text {
+    background: #ffeb3b;
+    color: #333;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Input com Placeholder Customizado
+     =================================================== */
+  ::placeholder {
+    color: #999;
+    opacity: 0.8;
+  }
+  :-ms-input-placeholder {
+    color: #999;
+  }
+  ::-ms-input-placeholder {
+    color: #999;
+  }
+  
+  /* ===================================================
+     Estilos para Bordas e Divisórias Decorativas
+     =================================================== */
+  .border-decor {
+    border: 2px dashed var(--primary-color);
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos com Efeito Parallax Simples
+     =================================================== */
+  .parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  /* ===================================================
+     Estilos para Gradientes de Texto
+     =================================================== */
+  .gradient-text {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   
-  /* Scrollbar Customization */
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: #f1f1f1; }
-  ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #555; }
-  
-  /* Tooltip Styles */
-  .tooltip {
-    position: absolute;
-    background: #333;
-    color: #fff;
-    padding: 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    pointer-events: none;
-    opacity: 0.9;
+  /* ===================================================
+     Estilos para Componentes de Carousel e Slider
+     =================================================== */
+  .carousel-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
   }
-  .tooltip::after {
-    content: '';
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  .carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+  }
+  .carousel-control.prev {
+    left: 10px;
+  }
+  .carousel-control.next {
+    right: 10px;
+  }
+  
+  /* ===================================================
+     Estilos para Containers com Overflow e Scroll Personalizado
+     =================================================== */
+  .scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 1rem;
+  }
+  .scroll-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  .scroll-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens Informativas no Header
+     =================================================== */
+  .header-message {
+    background: var(--secondary-color);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  /* ===================================================
+     Estilos para Formatação de Texto de Parágrafos Longos
+     =================================================== */
+  .long-text {
+    text-align: justify;
+    hyphens: auto;
+    line-height: 1.8;
+  }
+  
+  /* ===================================================
+     Estilos para Widgets com Efeitos de Hover Avançados
+     =================================================== */
+  .widget-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  /* ===================================================
+     Estilos para Títulos com Linhas Divisórias
+     =================================================== */
+  .section-title {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .section-title::after {
+    content: "";
     position: absolute;
     bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 3px;
   }
   
-  /* Button Variations */
-  .btn-custom {
-    background: #007bff;
+  /* ===================================================
+     Estilos para Formatação de Listas Numeradas
+     =================================================== */
+  ol.custom-ol {
+    counter-reset: item;
+    list-style-type: none;
+    padding-left: 0;
+  }
+  ol.custom-ol li {
+    counter-increment: item;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 2rem;
+  }
+  ol.custom-ol li::before {
+    content: counter(item) ".";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Botões com Efeito de Desvanecimento
+     =================================================== */
+  .button-fade {
+    background: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+  }
+  .button-fade:hover {
+    opacity: 1;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Formatação de Tabelas Avançadas
+     =================================================== */
+  .table-striped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  .table-striped tbody tr:nth-child(even) {
+    background-color: #fff;
+  }
+  .table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* ===================================================
+     Estilos para Blocos de Conteúdo com Margens e Padding Extra
+     =================================================== */
+  .extra-space {
+    padding: 2rem;
+    margin: 2rem 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+  }
+  
+  /* ===================================================
+     Estilos para Inputs de Pesquisa com Ícone Integrado
+     =================================================== */
+  .search-input {
+    position: relative;
+    width: 100%;
+  }
+  .search-input input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .search-input .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+  }
+  
+  /* ===================================================
+     Estilos para Indicadores de Atividade e Processamento
+     =================================================== */
+  .activity-indicator {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    z-index: 3000;
+    font-size: 0.9rem;
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Sessão Expirada
+     =================================================== */
+  .session-expired {
+    background: var(--secondary-color);
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes com Gradientes de Fundo
+     =================================================== */
+  .bg-gradient {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  /* ===================================================
+     Estilos para Classes de Utilitários de Visibilidade
+     =================================================== */
+  .visible { display: block !important; }
+  .invisible { display: none !important; }
+  
+  /* ===================================================
+     Estilos para Efeitos de Transformação e Rotação
+     =================================================== */
+  .rotate-90 {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+  }
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+  }
+  
+  /* ===================================================
+     Estilos para Bordas Arredondadas Customizadas
+     =================================================== */
+  .rounded-sm { border-radius: 4px; }
+  .rounded-md { border-radius: 8px; }
+  .rounded-lg { border-radius: 16px; }
+  
+  /* ===================================================
+     Estilos para Z-Index e Camadas de Exibição
+     =================================================== */
+  .z-10 { z-index: 10; }
+  .z-20 { z-index: 20; }
+  .z-30 { z-index: 30; }
+  .z-40 { z-index: 40; }
+  .z-50 { z-index: 50; }
+  
+  /* ===================================================
+     Estilos para Feedback de Formulários (Inputs, Textareas)
+     =================================================== */
+  .input-success {
+    border-color: #28a745;
+    background: #e8f5e9;
+  }
+  .input-error {
+    border-color: #dc3545;
+    background: #ffebee;
+  }
+  
+  /* ===================================================
+     Estilos para Mensagens de Ajuda e Dicas (Tooltip)
+     =================================================== */
+  .tooltip-container {
+    position: relative;
+    display: inline-block;
+  }
+  .tooltip-container .tooltip-text {
+    visibility: hidden;
+    width: 180px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 0.5rem;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* ===================================================
+     Estilos para Barra de Navegação Fixa Inferior
+     =================================================== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: var(--header-bg);
+    display: flex;
+    justify-content: space-around;
+    padding: 0.75rem 0;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    z-index: 1500;
+  }
+  .bottom-nav a {
+    color: var(--header-text);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .bottom-nav a:hover {
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Layout de Cards com Múltiplas Colunas
+     =================================================== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Botões de Ação com Ícones Integrados
+     =================================================== */
+  .button-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
     color: #fff;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s;
   }
-  .btn-custom:hover { background: #0069d9; }
-  .btn-lg { padding: 1rem 2rem; font-size: 1.25rem; }
-  .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+  .button-icon:hover {
+    background: var(--secondary-color);
+  }
   
-  /* Modal Enhancements */
-  .modal-content .modal-body p { margin: 0.5rem 0; }
+  /* ===================================================
+     Estilos para Elementos de Feedback em Tempo Real
+     =================================================== */
+  .live-feedback {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-top: 0.5rem;
+  }
   
-  /* Additional Animations */
+  /* ===================================================
+     Estilos para Containers de Dados com Rolagem Horizontal
+     =================================================== */
+  .horizontal-scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Listas de Itens com Espaçamento
+     =================================================== */
+  .item-list {
+    list-style: none;
+    padding: 0;
+  }
+  .item-list li {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  /* ===================================================
+     Estilos para Botões de Paginação Personalizados
+     =================================================== */
+  .pagination-button {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .pagination-button.active {
+    background: var(--primary-color);
+    color: #fff;
+  }
+  .pagination-button:hover {
+    background: #f0f0f0;
+  }
+  
+  /* ===================================================
+     Estilos para Links de Texto com Ícones
+     =================================================== */
+  .link-with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+  
+  /* ===================================================
+     Estilos para Alertas e Notificações de Sistema
+     =================================================== */
+  .system-alert {
+    background: #ffcccc;
+    color: #a94442;
+    padding: 1rem;
+    border-left: 4px solid var(--secondary-color);
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes com Bordas Duplas
+     =================================================== */
+  .double-border {
+    border: 2px double var(--primary-color);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes com Fundo Semi-transparente
+     =================================================== */
+  .semi-transparent {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(3px);
+    border-radius: 4px;
+    padding: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Animação de Títulos com Efeito de Aumento
+     =================================================== */
+  @keyframes titleGrow {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .title-grow {
+    animation: titleGrow 0.6s ease-out;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos com Efeito de Sombra Interna
+     =================================================== */
+  .inner-shadow {
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  /* ===================================================
+     Estilos para Efeitos de Desfoque em Fundos
+     =================================================== */
+  .blur-background {
+    backdrop-filter: blur(5px);
+  }
+  
+  /* ===================================================
+     Estilos para Layout de Cartões de Informação
+     =================================================== */
+  .info-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s;
+  }
+  .info-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* ===================================================
+     Estilos para Seções de Texto com Margens Aumentadas
+     =================================================== */
+  .text-section {
+    padding: 2rem;
+    margin: 2rem 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+  }
+  
+  /* ===================================================
+     Estilos para Notas de Rodapé com Fontes Especiais
+     =================================================== */
+  .footer-note {
+    font-size: 0.8rem;
+    color: #888;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Títulos Decorados com Sombra
+     =================================================== */
+  .decorated-title {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+  
+  /* ===================================================
+     Estilos para Divisores Horizontais Personalizados
+     =================================================== */
+  .divider-custom {
+    width: 80%;
+    height: 2px;
+    background: var(--primary-color);
+    margin: 2rem auto;
+    border-radius: 2px;
+  }
+  
+  /* ===================================================
+     Estilos para Ícones de Estado (sucesso, erro, alerta)
+     =================================================== */
+  .status-icon-success {
+    color: #28a745;
+    font-size: 1.2rem;
+  }
+  .status-icon-error {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+  }
+  .status-icon-warning {
+    color: #ffc107;
+    font-size: 1.2rem;
+  }
+  
+  /* ===================================================
+     Estilos para Formatação de Títulos de Seção com Subtítulos
+     =================================================== */
+  .section-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .section-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+  }
+  .section-header p {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes com Indicadores de Atualização
+     =================================================== */
+  .update-indicator {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+  
+  /* ===================================================
+     Estilos para Modo Offline e Indicadores de Conexão
+     =================================================== */
+  .offline-banner {
+    background: var(--secondary-color);
+    color: #fff;
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 1rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2500;
+  }
+  
+  /* ===================================================
+     Estilos para Animações de Entrada de Elementos com Delay
+     =================================================== */
+  .delay-anim {
+    animation-delay: 0.3s;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Ícones com Background Circular
+     =================================================== */
+  .circular-icon {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Formulários com Layout em Duas Colunas
+     =================================================== */
+  .form-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .form-two-col input,
+  .form-two-col select {
+    width: 100%;
+  }
+  
+  /* ===================================================
+     Estilos para Barras de Navegação com Efeito de Hover
+     =================================================== */
+  .navbar {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .navbar a {
+    color: var(--header-text);
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  .navbar a:hover {
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Contêiner de Modal com Scroll Interno
+     =================================================== */
+  .modal-scroll {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+  }
+  
+  /* ===================================================
+     Estilos para Botões de Ação Secundários com Ícones
+     =================================================== */
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .btn-icon:hover {
+    background: #f7f7f7;
+  }
+  
+  /* ===================================================
+     Estilos para Formatação de Datas e Horas
+     =================================================== */
+  .date-format {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Lista com Ícones de Check
+     =================================================== */
+  .check-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .check-list li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Formatação de Tabelas com Bordas Alternadas
+     =================================================== */
+  .table-alt tbody tr:nth-child(odd) {
+    background: #fafafa;
+  }
+  .table-alt tbody tr:nth-child(even) {
+    background: #fff;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Botões de Ação com Feedback
+     =================================================== */
+  .action-feedback {
+    border: 2px solid transparent;
+    transition: border 0.3s;
+  }
+  .action-feedback:hover {
+    border: 2px solid var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes com Gradientes para Textos
+     =================================================== */
+  .text-gradient {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Lista de Links com Hover
+     =================================================== */
+  .link-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  .link-list li {
+    margin-bottom: 0.5rem;
+  }
+  .link-list li a {
+    font-size: 1rem;
+    color: var(--primary-color);
+    transition: color 0.3s;
+  }
+  .link-list li a:hover {
+    color: var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Alertas com Ícones
+     =================================================== */
+  .alert-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+  }
+  
+  /* ===================================================
+     Estilos para Contêiner de Dados com Bordas e Sombreamento
+     =================================================== */
+  .data-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: var(--shadow-light);
+    margin: 1rem 0;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos de Título com Efeito de Sub-Linha
+     =================================================== */
+  .subline-title {
+    position: relative;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .subline-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+  }
+  
+  /* ===================================================
+     Estilos para Espaçamentos Personalizados
+     =================================================== */
+  .spacing-sm { margin: 0.5rem 0; }
+  .spacing-md { margin: 1rem 0; }
+  .spacing-lg { margin: 2rem 0; }
+  
+  /* ===================================================
+     Estilos para Bordas com Cores Variáveis
+     =================================================== */
+  .border-primary {
+    border: 2px solid var(--primary-color);
+  }
+  .border-secondary {
+    border: 2px solid var(--secondary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Fundo de Texto com Transparência
+     =================================================== */
+  .text-bg-transparent {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Layout de Formulário com Grid
+     =================================================== */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  /* ===================================================
+     Estilos para Barra de Navegação Superior Customizada
+     =================================================== */
+  .top-nav {
+    background: var(--header-bg);
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--header-text);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* ===================================================
+     Estilos para Ícones de Redes Sociais
+     =================================================== */
+  .social-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+    transition: transform 0.3s;
+  }
+  .social-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  /* ===================================================
+     Estilos para Footer Customizado com Links e Informações
+     =================================================== */
+  .custom-footer {
+    background: var(--header-bg);
+    color: var(--header-text);
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  .custom-footer a {
+    color: var(--header-text);
+    text-decoration: underline;
+    margin: 0 0.5rem;
+  }
+  .custom-footer a:hover {
+    color: var(--primary-color);
+  }
+  
+  /* ===================================================
+     Estilos para Marcação de Erros e Avisos
+     =================================================== */
+  .error-text {
+    color: var(--secondary-color);
+    font-weight: bold;
+  }
+  .warning-text {
+    color: #ffc107;
+    font-weight: bold;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Input com Efeito de Sombra
+     =================================================== */
+  .input-shadow {
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+  }
+  .input-shadow:focus {
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Lista com Divisores Customizados
+     =================================================== */
+  .list-divider li {
+    border-bottom: 1px solid #ccc;
+    padding: 0.5rem 0;
+  }
+  .list-divider li:last-child {
+    border-bottom: none;
+  }
+  
+  /* ===================================================
+     Estilos para Componentes de Vídeo e Mídia Incorporada
+     =================================================== */
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+  }
+  .video-container iframe,
+  .video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* ===================================================
+     Estilos para Elementos com Animação de Sombra Pulsante
+     =================================================== */
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% { box-shadow: 0 0 0 0 rgba(40,167,69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(40,167,69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40,167,69, 0); }
   }
-  .pulse { animation: pulse 1.5s infinite; }
-  
-  /* Extra Responsive Utilities */
-  @media (max-width: 575px) {
-    .container { width: 100%; padding: 0.5rem; }
-    .auth-container, .widget { margin: 1rem 0; }
-    .app-header, .app-footer { text-align: center; }
-  }
-  @media (min-width: 1600px) {
-    .container { width: 50%; }
-    .fs-large { font-size: 2rem !important; }
-    .btn, .btn-custom { font-size: 1.1rem; padding: 0.75rem 1.25rem; }
+  .pulse {
+    animation: pulse 2s infinite;
   }
   
-  /* Mais Classes Utilitárias para alcançar 300 linhas */
-  /* Spacing e Margin adicionais */
-  .mt-6 { margin-top: 6rem !important; }
-  .mb-6 { margin-bottom: 6rem !important; }
-  .pt-6 { padding-top: 6rem !important; }
-  .pb-6 { padding-bottom: 6rem !important; }
-  .ml-2 { margin-left: 2rem !important; }
-  .mr-2 { margin-right: 2rem !important; }
-  .px-3 { padding-left: 3rem !important; padding-right: 3rem !important; }
-  .py-3 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
-  
-  /* Border radius utilities extras */
-  .rounded-xl { border-radius: 16px !important; }
-  .rounded-xxl { border-radius: 24px !important; }
-  
-  /* Text color utilities extras */
-  .text-primary { color: #007bff !important; }
-  .text-success { color: #28a745 !important; }
-  .text-danger { color: #dc3545 !important; }
-  .text-warning { color: #ffc107 !important; }
-  .text-muted { color: #6c757d !important; }
-  
-  /* Positioning utilities */
-  .position-fixed { position: fixed; }
-  .position-sticky { position: sticky; }
-  .top-0 { top: 0; }
-  .bottom-0 { bottom: 0; }
-  .left-0 { left: 0; }
-  .right-0 { right: 0; }
-  
-  /* Display utilities */
-  .inline-block { display: inline-block; }
-  .block { display: block; }
-  .flex { display: flex; }
-  .flex-wrap { flex-wrap: wrap; }
-  .flex-column { flex-direction: column; }
-  .flex-row { flex-direction: row; }
-  .justify-center { justify-content: center; }
-  .justify-between { justify-content: space-between; }
-  .align-center { align-items: center; }
-  .align-start { align-items: flex-start; }
-  .align-end { align-items: flex-end; }
-  
-  /* Extra spacing and typography */
-  .spacer { height: 2rem; }
-  .separator { border-top: 2px solid #ccc; margin: 2rem 0; }
-  
-  /* Input focus enhancements */
-  input:focus, select:focus, textarea:focus {
-    border-color: #28a745;
-    outline: none;
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
-  }
-  
-  /* Modal fade out */
-  .fade-out { opacity: 0; transition: opacity 0.5s ease; }
-  
-  /* Custom scrollbar further */
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: #f1f1f1; }
-  ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #555; }
-  
-  /* Extra Table hover */
-  .data-table tr:hover { background: #f1f1f1; }
-  
-  /* Extra Utility Classes */
-  .mt-7 { margin-top: 7rem !important; }
-  .mb-7 { margin-bottom: 7rem !important; }
-  .pt-7 { padding-top: 7rem !important; }
-  .pb-7 { padding-bottom: 7rem !important; }
+  /* ===================================================
+     Fim dos estilos
+     =================================================== */
   
