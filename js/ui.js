@@ -1,6 +1,6 @@
 // Importa nossas funções de CRUD e o Chart.js (já incluído via CDN no HTML)
 import { Storage } from './storage.js';
-import Chart from 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.esm.js';
+import { Chart } from 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.esm.js';
 
 export const UI = {
   chart: null,
